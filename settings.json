@@ -1,0 +1,18 @@
+{
+	"html": {
+    "title": "FCC Boilerplate",
+		"classes": [],
+		"metatags": [
+			"<meta name='viewport' content='width=device-width, initial-scale=1'>"
+		]
+	},
+	"css": [
+		"https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css",
+		"https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.0/animate.min.css"
+	],
+	"javascript": [
+		"https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js",
+		"https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js",
+		"https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"
+	]
+}
