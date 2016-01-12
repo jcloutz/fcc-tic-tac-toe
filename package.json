@@ -17,6 +17,7 @@
     "gulp-plumber": "^1.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
+    "gulp-run": "^1.6.12",
     "gulp-sass": "^2.1.1",
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.5"
