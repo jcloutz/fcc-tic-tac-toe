@@ -1,6 +1,6 @@
 {
   "name": "fcc-boilerplate",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Basic boilerplate for building codepen.io ready projects locally utilizing, gulp, sass & browser-sync.",
   "author": "Jeremy Cloutier",
   "license": "WTFPL",
