@@ -11,7 +11,7 @@ var gulp = require('gulp'),
   replace = require('gulp-replace'),
   reload = browserSync.reload,
   rename = require('gulp-rename'),
-  run = require('gulp-run'),
+  shell = require('gulp-shell'),
   fs = require('fs');
 
 var paths = {
@@ -85,9 +85,13 @@ gulp.task('default', ['html', 'css', 'scripts'], function() {
 
 gulp.task('build', ['html', 'css', 'scripts']);
 
-gulp.task('deploy', function() {
-  run('git push origin :gh-pages').exec()
-    .on('error', function() {}); // catch error if the branch doesn't exist
-
-  run('git subtree push --prefix output origin gh-pages').exec();
-});
+gulp.task('gh-deploy', shell.task([
+    'git push origin :gh-pages',
+    'git subtree push --prefix output origin gh-pages'
+  ], {
+    ignoreErrors: true
+  }));
+// shell.task([
+//   'git push origin :gh-pages',
+//   'git subtree push --prefix output origin gh-pages'
+// ]));
