@@ -1,16 +1,28 @@
 {
-	"html": {
-    "title": "FCC Boilerplate",
-		"classes": [],
-		"metatags": [
-			"<meta name='viewport' content='width=device-width, initial-scale=1'>"
-		]
-	},
-	"css": [
-		"//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css",
-		"//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.0/animate.min.css"
-	],
-	"javascript": [
-		"//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"
-	]
+  "outputDir": "output",
+  "title": "FCC Boilerplate",
+
+  "base_url": "github.io",
+  "html": {
+    "html_classes": [],
+    "head": [
+      "<meta name='viewport' content='width=device-width, initial-scale=1'>"
+    ]
+  },
+  "css": {
+    "autoprefixer": true,
+    "default": "normalize",
+    "external": [
+      "//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.0/animate.min.css"
+    ],
+    "defaults": {
+      "normalize": "//cdn.jsdelivr.net/normalize/latest/normalize.min.css",
+      "reset": "https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+    }
+  },
+  "javascript": {
+    "external": [
+      "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"
+    ]
+  }
 }
