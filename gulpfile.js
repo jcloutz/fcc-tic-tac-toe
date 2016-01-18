@@ -1,96 +1,58 @@
 var gulp = require('gulp'),
-  del = require('del'),
-  babel = require('gulp-babel'),
-  eslint = require('gulp-eslint'),
-  sass = require('gulp-sass'),
-  prefix = require('gulp-autoprefixer'),
-  browserSync = require('browser-sync').create(),
-  nodemon = require('gulp-nodemon'),
-  watch = require('gulp-watch'),
-  plumber = require('gulp-plumber'),
-  replace = require('gulp-replace'),
-  reload = browserSync.reload,
-  rename = require('gulp-rename'),
-  shell = require('gulp-shell'),
+  plugins = require('gulp-load-plugins')(),
+  exec = require('child_process').exec,
   fs = require('fs');
 
-var paths = {
-  source: './src/',
-  output: './output/',
+plugins.browserSync = require('browser-sync').create();
+plugins.reload = plugins.browserSync.reload;
+
+// base path and settings object
+var BASE_PATH = process.cwd() + '/';
+var settings = JSON.parse(fs.readFileSync(BASE_PATH + 'settings.json', {encoding: 'utf8'}));
+// add paths to settings
+settings.paths = {
+  base: BASE_PATH,
+  source: BASE_PATH + 'src/',
+  output: BASE_PATH + settings.outputDir + '/',
 }
-gulp.task('clean', () => {
-  return del(paths.output);
-});
 
-gulp.task('html', () => {
-  var settings = JSON.parse(fs.readFileSync('./settings.json', {encoding: 'utf8'}));
-  var content = fs.readFileSync(paths.source + 'index.html', {encoding: 'utf8'});
+process.env.deploy = false;
 
-  var metatags = settings.html.metatags.join('\n');
-  var htmlClasses = settings.html.classes.join(' ');
-  var stylesheets = settings.css.map(function(stylesheet) {
-    return '<link rel="stylesheet" href="' + stylesheet + '">';
-  }).join('\n');
-  console.log(htmlClasses);
-  var scripts = settings.javascript.map(function(script) {
-    return '<script src="' + script + '"></script>';
-  }).join('\n');
+function getTask(task) {
+    return require('./tasks/' + task)(gulp, plugins, settings);
+}
 
-  gulp.src('template.html')
-    .pipe(plumber())
-    .pipe(replace('%TITLE%', settings.html.title))
-    .pipe(replace('%CLASSES%', htmlClasses))
-    .pipe(replace('%METATAGS%', metatags))
-    .pipe(replace('%STYLESHEETS%', stylesheets))
-    .pipe(replace('%CONTENT%', content))
-    .pipe(replace('%SCRIPTS%', scripts))
-    .pipe(rename('index.html'))
-    .pipe(gulp.dest(paths.output))
-    .pipe(browserSync.stream());
-})
+gulp.task('scripts', getTask('scripts'));
+gulp.task('css', getTask('css'));
+gulp.task('html', getTask('html'));
+gulp.task('external-css', getTask('external-css'));
+gulp.task('external-js', getTask('external-js'));
 
-gulp.task('scripts', () => {
-  return gulp.src(paths.source+'*.js')
-    .pipe(plumber())
-    .pipe(babel({
-      presets: ['react', 'es2015']
-    }))
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(eslint.failOnError())
-    .pipe(gulp.dest(paths.output))
-    .pipe(browserSync.stream());
-});
-
-gulp.task('css', function () {
-
-  return gulp.src(paths.source + '*.scss')
-    .pipe(plumber())
-    .pipe(sass({outputStyle: 'expanded', sourceComments: 'map'}, {errLogToConsole: true}))
-    .pipe(prefix("last 2 versions", "> 1%", "ie 8", "Android 2", "Firefox ESR"))
-    .pipe(gulp.dest(paths.output))
-    .pipe(browserSync.stream());
-});
-
-gulp.task('default', ['html', 'css', 'scripts'], function() {
-  browserSync.init({
+gulp.task('watch', ['html', 'css', 'scripts'], function() {
+  plugins.browserSync.init({
     server: {
-      baseDir: paths.output
+      baseDir: settings.paths.output
     }
   });
-  gulp.watch([paths.source + 'index.html', 'template.html', 'settings.json'], ['html']);
-  gulp.watch(paths.source + "*.scss", ['css']);
-  gulp.watch(paths.source + '*.js', ['scripts']);
+  gulp.watch([settings.paths.source + '**/*.{html,jade,haml,md}', './template.html', './settings.json'], ['html']);
+  gulp.watch(settings.paths.source + "css/**/*.{css,scss}", ['css']);
+  gulp.watch(settings.paths.source + 'scripts/*.js', ['scripts']);
 });
 
 gulp.task('build', ['html', 'css', 'scripts']);
 
-gulp.task('gh-deploy', shell.task([
-    'git push origin :gh-pages',
-    'git subtree push --prefix output origin gh-pages'
-  ], {
-    ignoreErrors: true
-  }));
+gulp.task('gh-deploy', function() {
+  process.env.deploy = true;
+  gulp.run('build', function() {
+    plugins.shell.task([
+        'git push origin :gh-pages',
+        'git subtree push --prefix output origin gh-pages'
+      ], {
+        ignoreErrors: true
+    });
+  })
+
+});
 // shell.task([
 //   'git push origin :gh-pages',
 //   'git subtree push --prefix output origin gh-pages'
