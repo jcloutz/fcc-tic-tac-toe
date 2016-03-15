@@ -9,7 +9,7 @@ module.exports = function(gulp, plugins, settings) {
         .pipe(plugins.eslint())
         .pipe(plugins.eslint.format())
         .pipe(plugins.eslint.failOnError())
-        .pipe(gulp.dest(settings.paths.output + '/scripts.js'))
+        .pipe(gulp.dest(settings.paths.output + '/scripts'))
         .pipe(plugins.browserSync.stream());
     });
   }

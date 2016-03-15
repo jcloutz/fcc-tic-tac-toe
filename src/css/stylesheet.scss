@@ -1,0 +1,74 @@
+// Styles Here
+$mib-yellow: #FDE734;
+$es-blue: #0A5599;
+body {
+  background-image: url('/images/jbb-landing-background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  margin-bottom: 60px;
+}
+
+.container-fluid {
+  max-width: 1000px;
+}
+
+img {
+  max-width: 100%;
+  max-height: auto;
+}
+
+.product {
+  text-align: center;
+  &__btn {
+    margin-top: 15px;
+    border: none;
+    padding: 15px 0;
+    border-radius: 0;
+    transition: background-color .5s ease-in-out;
+    &--mib {
+      background-color: $mib-yellow;
+      &:hover {
+        background-color: darken($mib-yellow, 15);
+      }
+    }
+    &--es {
+      background-color: $es-blue;
+      color: white;
+      &:hover {
+        color: white;
+        background-color: darken($es-blue, 15);
+      }
+    }
+  }
+  &__btn-lead {
+    display: block;
+  }
+  &__btn-name {
+    display: block;
+    font-weight: 800;
+  }
+}
+.jbb {
+  position: fixed;
+  bottom: -60px;
+  right: 0;
+}
+
+@media screen and (max-width: 991px) {
+  body {
+    margin-bottom: 0;
+  }
+  .jbb {
+    position: relative;
+    bottom: 0;
+    margin-bottom: -50px;
+    overflow: hidden;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .product__btn {
+    font-size: 10.5px;
+  }
+}

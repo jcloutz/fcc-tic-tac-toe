@@ -13,7 +13,8 @@
     "autoprefixer": true,
     "default": "normalize",
     "external": [
-      "//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.0/animate.min.css"
+      "https://fonts.googleapis.com/css?family=Open+Sans:400,800",
+      "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
     ],
     "defaults": {
       "normalize": "//cdn.jsdelivr.net/normalize/latest/normalize.min.css",
@@ -22,7 +23,8 @@
   },
   "javascript": {
     "external": [
-      "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"
+      "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js",
+      "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
     ]
   }
 }
