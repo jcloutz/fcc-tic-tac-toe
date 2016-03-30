@@ -1,0 +1,81 @@
+@import url(https://fonts.googleapis.com/css?family=Jura:300);
+primary-color = #E2F7FF
+$background-color = #202123
+primary-shadow-color = rgba(226,247, 255, .5)
+text-shadow = 0 0 7px primary-shadow-color
+$hidden-shadow = 0 0 7px $background-color
+body
+  background-color: $background-color
+  color primary-color
+  text-shadow: text-shadow
+  font-family: 'Jura', Helvetica, Arial, sans-serif
+  font-weight: 300
+  text-align: center
+
+.typewriter
+  typewriter-font-size = 35px
+  font-size: typewriter-font-size
+  line-height: 60px
+  font-weight: 300
+  text-transform: uppercase
+
+  // classes for ReactCSSTransitionGroup
+  &__character-enter
+    color: $background-color
+    text-shadow: $hidden-shadow
+    &.typewriter__character-enter-active
+      text-shadow: text-shadow
+      color: primary-color
+      // transition: all .1s ease-in
+  &__character-leave
+    color: green
+    &.typewriter__character-leave-active
+      color: blue
+
+  &__text--hide
+    visibility: hidden;
+    position: relative
+  &__caret
+    display: inline-block
+    margin-bottom: -6px
+    height: typewriter-font-size
+    width: 12px
+    bottom: 0
+    left: -20px
+    border-radius: 1px
+    animation-duration: 1s
+    animation-fill-mode: both
+    animation-iteration-count: infinite
+    animation-name: pulse
+
+
+.prompt
+  &__button-container
+    font-size: 30px
+    margin-top: 40px
+  &__button-container button
+    color: primary-color
+    padding: 15px 0
+    display: inline-block;
+    margin: 0 8px
+    background-color: transparent
+    border: 1px solid transparent;
+    text-transform: uppercase
+    text-shadow: text-shadow
+    width: 100px
+    transition: all .5s ease-in-out
+    &:hover
+      border-color: primary-color
+      box-shadow: 0 0 7px rgba(226,247, 255, .5)
+
+@keyframes pulse {
+  0% {
+    background-color: transparent
+  }
+  50% {
+    background-color: primary-color
+  }
+  100% {
+    background-color: transparent
+  }
+}

@@ -35,7 +35,7 @@ gulp.task('watch', ['html', 'css', 'scripts'], function() {
     }
   });
   gulp.watch([settings.paths.source + '**/*.{html,jade,haml,md}', './template.html', './settings.json'], ['html']);
-  gulp.watch(settings.paths.source + "css/**/*.{css,scss}", ['css']);
+  gulp.watch(settings.paths.source + "css/**/*.{css,scss,styl}", ['css']);
   gulp.watch(settings.paths.source + 'scripts/*.js', ['scripts']);
 });
 

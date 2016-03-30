@@ -1,94 +1,92 @@
-/* line 4, stdin */
+@import url("https://fonts.googleapis.com/css?family=Jura:300");
 body {
-  background-image: url("/images/jbb-landing-background.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  font-family: "Open Sans", Arial, Helvetica, sans-serif;
-  margin-bottom: 60px;
-}
-
-/* line 12, stdin */
-.container-fluid {
-  max-width: 1000px;
-}
-
-/* line 16, stdin */
-img {
-  max-width: 100%;
-  max-height: auto;
-}
-
-/* line 21, stdin */
-.product {
+  background-color: #202123;
+  color: #e2f7ff;
+  text-shadow: 0 0 7px rgba(226,247,255,0.5);
+  font-family: 'Jura', Helvetica, Arial, sans-serif;
+  font-weight: 300;
   text-align: center;
 }
-
-/* line 23, stdin */
-.product__btn {
-  margin-top: 15px;
-  border: none;
+.typewriter {
+  font-size: 35px;
+  line-height: 60px;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+.typewriter__character-enter {
+  color: #202123;
+  text-shadow: 0 0 7px #202123;
+}
+.typewriter__character-enter.typewriter__character-enter-active {
+  text-shadow: 0 0 7px rgba(226,247,255,0.5);
+  color: #e2f7ff;
+}
+.typewriter__character-leave {
+  color: #008000;
+}
+.typewriter__character-leave.typewriter__character-leave-active {
+  color: #00f;
+}
+.typewriter__text--hide {
+  visibility: hidden;
+  position: relative;
+}
+.typewriter__caret {
+  display: inline-block;
+  margin-bottom: -6px;
+  height: 35px;
+  width: 12px;
+  bottom: 0;
+  left: -20px;
+  border-radius: 1px;
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-name: pulse;
+          animation-name: pulse;
+}
+.prompt__button-container {
+  font-size: 30px;
+  margin-top: 40px;
+}
+.prompt__button-container button {
+  color: #e2f7ff;
   padding: 15px 0;
-  border-radius: 0;
-  transition: background-color .5s ease-in-out;
+  display: inline-block;
+  margin: 0 8px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  text-shadow: 0 0 7px rgba(226,247,255,0.5);
+  width: 100px;
+  transition: all 0.5s ease-in-out;
 }
-
-/* line 29, stdin */
-.product__btn--mib {
-  background-color: #FDE734;
+.prompt__button-container button:hover {
+  border-color: #e2f7ff;
+  box-shadow: 0 0 7px rgba(226,247,255,0.5);
 }
-
-/* line 31, stdin */
-.product__btn--mib:hover {
-  background-color: #e2ca02;
-}
-
-/* line 35, stdin */
-.product__btn--es {
-  background-color: #0A5599;
-  color: white;
-}
-
-/* line 38, stdin */
-.product__btn--es:hover {
-  color: white;
-  background-color: #052d51;
-}
-
-/* line 44, stdin */
-.product__btn-lead {
-  display: block;
-}
-
-/* line 47, stdin */
-.product__btn-name {
-  display: block;
-  font-weight: 800;
-}
-
-/* line 52, stdin */
-.jbb {
-  position: fixed;
-  bottom: -60px;
-  right: 0;
-}
-
-@media screen and (max-width: 991px) {
-  /* line 59, stdin */
-  body {
-    margin-bottom: 0;
+@-webkit-keyframes pulse {
+  0% {
+    background-color: transparent;
   }
-  /* line 62, stdin */
-  .jbb {
-    position: relative;
-    bottom: 0;
-    margin-bottom: -50px;
-    overflow: hidden;
+  50% {
+    background-color: #e2f7ff;
+  }
+  100% {
+    background-color: transparent;
   }
 }
-
-@media screen and (max-width: 600px) {
-  /* line 71, stdin */
-  .product__btn {
-    font-size: 10.5px;
+@keyframes pulse {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #e2f7ff;
+  }
+  100% {
+    background-color: transparent;
   }
 }

@@ -4,7 +4,7 @@ module.exports = function(gulp, plugins, settings) {
       return gulp.src(settings.paths.source+'scripts/*.js')
         .pipe(plugins.plumber())
         .pipe(plugins.babel({
-          presets: ['react', 'es2015']
+          presets: ['react', 'stage-2', 'es2015']
         }))
         .pipe(plugins.eslint())
         .pipe(plugins.eslint.format())
