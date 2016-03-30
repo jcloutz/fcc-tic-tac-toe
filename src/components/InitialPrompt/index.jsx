@@ -9,10 +9,15 @@ class InitialPrompt extends React.Component {
       typewriterStatus: 'typing'
     }
     this.handleConfirmClick = this.handleConfirmClick.bind(this)
+    this.handleCancelClick = this.handleCancelClick.bind(this)
   }
 
   handleConfirmClick (e) {
     this.setState({typewriterStatus: 'deleting'})
+  }
+
+  handleCancelClick (e) {
+    this.setState({typewriterStatus: 'typing'})
   }
 
   render () {
@@ -24,13 +29,15 @@ class InitialPrompt extends React.Component {
           startDelay={2000}
           keystrokeDelay={80}
           enterTimeout={500}
-          leaveTimeout={500}
+          leaveTimeout={3000}
         />
         <div className='prompt__button-container'>
           <button onClick={this.handleConfirmClick}>
             Yes
           </button>
-          <button>No</button>
+          <button onClick={this.handleCancelClick}>
+            No
+          </button>
         </div>
       </div>
     )

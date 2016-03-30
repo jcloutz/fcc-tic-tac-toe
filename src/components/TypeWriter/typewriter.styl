@@ -17,8 +17,10 @@
       transition: all .1s ease-in
   &__character-leave
     color: green
+    transition: all .1s ease-out
     &.typewriter__character-leave-active
-      color: blue
+      color: $background-color
+      text-shadow: $hidden-shadow
 
   &__text--hide
     visibility: hidden;

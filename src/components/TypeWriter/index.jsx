@@ -1,11 +1,12 @@
 import React from 'react'
-import CSSTransitionGroup from 'react-addons-css-transition-group'
+import TypeWriterCarriage from './TypeWriterCarriage'
 require('./typewriter.styl')
 
 export default class TypeWriter extends React.Component {
   constructor (props) {
     super(props)
-    this.carraige = null // will be used for interval
+    this.typeStartTimeout = null // will be used for interval
+    this.typeKeystrokeInterval = null
     this.state = {
       status: 'idle',
       message: this.props.message,
@@ -13,121 +14,77 @@ export default class TypeWriter extends React.Component {
       hiddenChars: this.props.message
     }
     this.typeMessage = this.typeMessage.bind(this)
-    this.deleteMessage = this.deleteMessage.bind(this)
-  }
-
-  typeMessage () {
-    // this.setState({typing: true})
-    let typewriter = new Promise((resolve, reject) => {
-      this.typewriter = setTimeout(() => {
-        this.setState({status: 'typing'}, () => {
-          resolve(true)
-        })
-      }, this.props.startDelay)
-    })
-    // start typing characters
-    typewriter.then(() => {
-      let message = this.state.message.split('')
-      let counter = 0
-      let _this = this
-      // Declare inteveral at class level to allow componentWillUnmount to cancel if necessary
-      this.carraige = setInterval(() => {
-        if (message.length > 0 && _this.state.status === 'typing') {
-          let complete = (counter === message.length)
-          this.setState({
-            visibleChars: this.state.visibleChars + message.shift(),
-            hiddenChars: message.join(''),
-            status: complete ? 'idle' : 'typing'
-          })
-          counter++
-        } else {
-          console.log('typing finished')
-          clearInterval(this.carraige)
-        }
-      }, this.props.keystrokeDelay)
-    })
-  }
-
-  deleteMessage () {
-    let typewriter = new Promise((resolve, reject) => {
-      this.typewriter = setTimeout(() => {
-        this.setState({status: 'deleting'}, () => {
-          resolve(true)
-        })
-      }, this.props.startDelay)
-    })
-    // start typing characters
-    typewriter.then(() => {
-      let { visibleChars, hiddenChars } = this.state
-      let counter = 0
-      let _this = this
-
-      // Declare inteveral at class level to allow componentWillUnmount to cancel if necessary
-      this.carraige = setInterval(() =>
-        debugger
-        console.log('deleting')
-        if (visibleChars.length > 0 && _this.state.status === 'deleting') {
-          let complete = visibleChars.length === 0
-          this.setState({
-            visibleChars: visibleChars.join(''),
-            hiddenChars: visibleChars.pop() + hiddenChars,
-            status: complete ? 'idle' : 'typing'
-          })
-          counter++
-        } else {
-          console.log('typing finished')
-          clearInterval(this.carraige)
-        }
-      }, this.props.keystrokeDelay)
-    })
   }
 
   componentDidMount () {
     // Create promise to begin rendering typed characters after start delay.
-    // this.setState({typing: true, status: 'idle'})
+    this.setState({status: 'typing'}, () => {
+      this.typeMessage()
+    })
+  }
+
+  componentWillReceiveProps (next) {
+    clearInterval(this.typeKeystrokeInterval)
+    clearTimeout(this.typeStartTimeout)
+
+    this.setState({status: next.status}, () => {
+      this.typeMessage()
+    })
   }
 
   componentWillUnmount () {
     // clear timeout and intervals
-    clearTimeout(this.typewriter)
-    clearInterval(this.carraige)
+    clearTimeout(this.typeStartTimeout)
+    clearInterval(this.typeKeystrokeInterval)
+  } // end componentWillUnmount
+
+  typeMessage () {
+    this.typeStartTimeout = setTimeout(() => {
+      this.typeKeystrokeInterval = setInterval(() => {
+        let {visibleChars, hiddenChars} = this.state
+        let completed = null
+        let incompleteStatus = null
+
+        if (this.state.status === 'typing') {
+          visibleChars += hiddenChars.slice(0, 1)
+          hiddenChars = hiddenChars.slice(1, hiddenChars.length)
+          completed = hiddenChars.length === 0
+          incompleteStatus = 'typing'
+        } else { // deleting
+          hiddenChars = visibleChars.slice(visibleChars.length - 1, visibleChars.length) + hiddenChars
+          visibleChars = visibleChars.slice(0, visibleChars.length - 1)
+          completed = visibleChars.length === 0
+          incompleteStatus = 'deleting'
+        }
+
+        this.setState({
+          visibleChars,
+          hiddenChars,
+          status: completed ? 'idle' : incompleteStatus
+        })
+
+        if (completed) {
+          clearInterval(this.typeKeystrokeInterval)
+        }
+      }, this.props.keystrokeDelay)
+    }, this.props.startDelay)
   }
 
   render () {
-    if (this.props.status === 'typing' && this.state.status !== 'typing') {
-      console.log('type message triggered')
-      this.typeMessage()
-    } else if (this.props.status === 'deleting' && this.state.status !== 'deleting') {
-      console.log('delete message triggered')
-      this.deleteMessage()
-    }
-    let counter = 0
     const {visibleChars, hiddenChars} = this.state
-    const visChars = visibleChars.split('').map((char) => (
-      <span key={counter++}>{char}</span>
-    ))
-    const hidChars = hiddenChars.split('').map((char) => (
-      <span key={counter++}>{char}</span>
-    ))
-
     return (
       <div className='typewriter'>
-        <CSSTransitionGroup
-          className='typewriter__carriage'
-          transitionName='typewriter__character'
-          transitionEnterTimeout={this.props.enterTimeout}
-          transitionLeaveTimeout={this.props.leaveTimeout}
-        >
-          {visChars}
-        </CSSTransitionGroup>
-        <span className='typewriter__caret'></span>
-        <span className='typewriter__text--hide'>
-          {hidChars}
-        </span>
+        <TypeWriterCarriage
+          visible={visibleChars}
+          hidden={hiddenChars}
+          enterTimeout={500}
+          leaveTimeout={500}
+        />
       </div>
     )
-  }
+  } // end render()
 }
+
 const { number, string } = React.PropTypes
 
 TypeWriter.propTypes = {
