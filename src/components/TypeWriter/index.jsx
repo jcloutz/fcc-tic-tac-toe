@@ -1,13 +1,10 @@
-const { Router, Route, Link, IndexRoute, hashHistory } = ReactRouter
-const { CSSTransitionGroup } = React.addons
+import React from 'react'
+import CSSTransitionGroup from 'react-addons-css-transition-group'
+require('./typewriter.styl')
 
-const TypeWriterCharacter = ({character}) => (
-  <span className="typewriter__text--show">{character}</span>
-)
-
-class TypeWriter extends React.Component {
-  constructor(props) {
-    super (props)
+export default class TypeWriter extends React.Component {
+  constructor (props) {
+    super(props)
     this.carraige = null // will be used for interval
     this.state = {
       message: this.props.message,
@@ -16,7 +13,7 @@ class TypeWriter extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // Create promise to begin rendering typed characters after start delay.
     let typewriter = new Promise((resolve, reject) => {
       this.typewriter = setTimeout(() => {
@@ -43,91 +40,49 @@ class TypeWriter extends React.Component {
     })
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     // TODO implement reverse type effect.
     // clear timeout and intervals
     clearTimeout(this.typewriter)
     clearInterval(this.carraige)
-    console.log('leaving');
+    console.log('leaving')
     return false
   }
 
-  render() {
+  render () {
     let counter = 0
     const {visibleChars, hiddenChars} = this.state
     const visChars = visibleChars.split('').map((char) => (
       <span key={counter++}>{char}</span>
     ))
     const hidChars = hiddenChars.split('').map((char) => (
-      <span>{char}</span>
+      <span key={counter++}>{char}</span>
     ))
 
     return (
-      <div className="typewriter">
+      <div className='typewriter'>
         <CSSTransitionGroup
-          className="typewriter__carriage"
-          transitionName="typewriter__character"
+          className='typewriter__carriage'
+          transitionName='typewriter__character'
           transitionEnterTimeout={this.props.enterTimeout}
           transitionLeaveTimeout={this.props.leaveTimeout}
         >
           {visChars}
         </CSSTransitionGroup>
-        <span className="typewriter__caret"></span>
-        <span className="typewriter__text--hide">
+        <span className='typewriter__caret'></span>
+        <span className='typewriter__text--hide'>
           {hidChars}
         </span>
       </div>
     )
   }
 }
+const { number, string } = React.PropTypes
 
-const InitialPrompt = () => (
-  <div>
-    <TypeWriter
-      message="DO YOU WANT TO PLAY A GAME?"
-      startDelay={2000}
-      keystrokeDelay={80}
-      enterTimeout={500}
-      leaveTimeout={500}
-    />
-    <div className="prompt__button-container">
-      <button onClick={() => {
-          hashHistory.push('/players')
-        }}>Yes</button>
-      <button>No</button>
-    </div>
-  </div>
-)
-
-const PlayerCount = () => (
-  <div>
-    <TypeWriter
-      message="How many players?"
-      startDelay={2000}
-      keystrokeDelay={80}
-      enterTimeout={500}
-      leaveTimeout={500}
-    />
-  </div>
-)
-
-const Layout = (props) => (
-  <div>
-    <h1>Tic Tac Toe</h1>
-    {props.children}
-  </div>
-)
-
-const App = () => (
-  <Router history={hashHistory}>
-    <Route path="/" component={Layout}>
-      <IndexRoute component={InitialPrompt} />
-      <Route path="/players" component={PlayerCount} />
-
-    </Route>
-  </Router>
-)
-
-ReactDOM.render(
-  <App />
-  , document.getElementById('root'))
+TypeWriter.propTypes = {
+  message: string,
+  startDelay: number,
+  keystrokeDelay: number,
+  enterTimeout: number,
+  leaveTimeout: number
+}

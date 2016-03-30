@@ -1,0 +1,49 @@
+@import '../../style/variables'
+
+.typewriter
+  $typewriter-font-size = 35px
+  font-size: $typewriter-font-size
+  line-height: 60px
+  font-weight: 300
+  text-transform: uppercase
+
+  // classes for ReactCSSTransitionGroup
+  &__character-enter
+    color: $background-color
+    text-shadow: $hidden-shadow
+    &.typewriter__character-enter-active
+      text-shadow: $text-shadow
+      color: $primary-color
+      // transition: all .1s ease-in
+  &__character-leave
+    color: green
+    &.typewriter__character-leave-active
+      color: blue
+
+  &__text--hide
+    visibility: hidden;
+    position: relative
+  &__caret
+    display: inline-block
+    margin-bottom: -6px
+    height: $typewriter-font-size
+    width: 12px
+    bottom: 0
+    left: -20px
+    border-radius: 1px
+    animation-duration: 1s
+    animation-fill-mode: both
+    animation-iteration-count: infinite
+    animation-name: pulse
+
+@keyframes pulse {
+  0% {
+    background-color: transparent
+  }
+  50% {
+    background-color: $primary-color
+  }
+  100% {
+    background-color: transparent
+  }
+}
