@@ -1,10 +1,15 @@
 import React from 'react'
 const { element } = React.PropTypes
+require('./layout.styl')
 
 const Layout = ({children}) => (
-  <div>
-    <h1>Tic Tac Toe</h1>
-    {children}
+  <div className='layout__container'>
+    <div className='layout__content'>
+      {children}
+    </div>
+    <div className="layout__footer">
+      Footer Content
+    </div>
   </div>
 )
 

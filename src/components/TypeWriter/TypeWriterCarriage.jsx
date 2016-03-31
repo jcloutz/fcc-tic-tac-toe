@@ -1,7 +1,6 @@
 import React from 'react'
-import CSSTransitionGroup from 'react-addons-css-transition-group'
 
-const TypeWriterCarriage = ({visible, hidden, enterTimeout, leaveTimeout}) => {
+const TypeWriterCarriage = ({ visible, hidden }) => {
   let counter = 0
 
   const visChars = visible.split('').map((char) => (
@@ -13,20 +12,20 @@ const TypeWriterCarriage = ({visible, hidden, enterTimeout, leaveTimeout}) => {
 
   return (
     <div>
-      <CSSTransitionGroup
-        className='typewriter__carriage'
-        transitionName='typewriter__character'
-        transitionEnterTimeout={enterTimeout}
-        transitionLeaveTimeout={leaveTimeout}
-      >
-        {visChars}
-      </CSSTransitionGroup>
+      {visChars}
       <span className='typewriter__caret'></span>
       <span className='typewriter__text--hide'>
         {hidChars}
       </span>
     </div>
   )
+}
+
+const { string, number } = React.PropTypes
+
+TypeWriterCarriage.propTypes = {
+  visible: string,
+  hidden: string
 }
 
 export default TypeWriterCarriage

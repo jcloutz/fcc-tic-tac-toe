@@ -5,14 +5,24 @@ require('./typewriter.styl')
 export default class TypeWriter extends React.Component {
   constructor (props) {
     super(props)
-    this.typeStartTimeout = null // will be used for interval
-    this.typeKeystrokeInterval = null
     this.state = {
       status: 'idle',
       message: this.props.message,
       visibleChars: '',
       hiddenChars: this.props.message
     }
+
+    this.props = {
+      status: 'idle',
+      message: 'No Message',
+      startDelay: 1500,
+      keystrokeDelay: 50,
+      onFinish: () => {}
+    }
+
+    this.typeStartTimeout = null
+    this.typeKeystrokeInterval = null
+
     this.typeMessage = this.typeMessage.bind(this)
   }
 
@@ -39,35 +49,44 @@ export default class TypeWriter extends React.Component {
   } // end componentWillUnmount
 
   typeMessage () {
+    // assign delays based on typing direction
+    let startDelay = this.state.status === 'typing' ? this.props.startDelay : 300
+    let keystrokeDelay = this.state.status === 'typing' ? this.props.keystrokeDelay : 30
+
     this.typeStartTimeout = setTimeout(() => {
       this.typeKeystrokeInterval = setInterval(() => {
+        // set defaults
         let {visibleChars, hiddenChars} = this.state
         let completed = null
-        let incompleteStatus = null
+        let completeType = null
 
         if (this.state.status === 'typing') {
+          // move caret to the right
           visibleChars += hiddenChars.slice(0, 1)
           hiddenChars = hiddenChars.slice(1, hiddenChars.length)
           completed = hiddenChars.length === 0
-          incompleteStatus = 'typing'
-        } else { // deleting
+          completeType = 'typing'
+        } else {
+          // move carat left
           hiddenChars = visibleChars.slice(visibleChars.length - 1, visibleChars.length) + hiddenChars
           visibleChars = visibleChars.slice(0, visibleChars.length - 1)
           completed = visibleChars.length === 0
-          incompleteStatus = 'deleting'
+          completeType = 'deleting'
         }
 
+        // set state to current values
         this.setState({
           visibleChars,
           hiddenChars,
-          status: completed ? 'idle' : incompleteStatus
+          status: completed ? 'idle' : completeType
         })
 
         if (completed) {
+          this.props.onFinish(completeType)
           clearInterval(this.typeKeystrokeInterval)
         }
-      }, this.props.keystrokeDelay)
-    }, this.props.startDelay)
+      }, keystrokeDelay)
+    }, startDelay)
   }
 
   render () {
@@ -77,21 +96,18 @@ export default class TypeWriter extends React.Component {
         <TypeWriterCarriage
           visible={visibleChars}
           hidden={hiddenChars}
-          enterTimeout={500}
-          leaveTimeout={500}
         />
       </div>
     )
-  } // end render()
+  }
 }
 
-const { number, string } = React.PropTypes
+const { number, string, func } = React.PropTypes
 
 TypeWriter.propTypes = {
   status: string,
   message: string,
   startDelay: number,
   keystrokeDelay: number,
-  enterTimeout: number,
-  leaveTimeout: number
+  onFinish: func
 }
