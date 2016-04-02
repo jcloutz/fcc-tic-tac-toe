@@ -1,88 +1,113 @@
 import React from 'react'
-import CSSTransitionGroup from 'react-addons-css-transition-group'
+import TypeWriterCarriage from './TypeWriterCarriage'
 require('./typewriter.styl')
 
 export default class TypeWriter extends React.Component {
   constructor (props) {
     super(props)
-    this.carraige = null // will be used for interval
     this.state = {
+      status: 'idle',
       message: this.props.message,
       visibleChars: '',
       hiddenChars: this.props.message
     }
+
+    this.props = {
+      status: 'idle',
+      message: 'No Message',
+      startDelay: 1500,
+      keystrokeDelay: 50,
+      onFinish: () => {}
+    }
+
+    this.typeStartTimeout = null
+    this.typeKeystrokeInterval = null
+
+    this.typeMessage = this.typeMessage.bind(this)
   }
 
   componentDidMount () {
     // Create promise to begin rendering typed characters after start delay.
-    let typewriter = new Promise((resolve, reject) => {
-      this.typewriter = setTimeout(() => {
-        resolve(true)
-      }, this.props.startDelay)
+    this.setState({status: 'typing'}, () => {
+      this.typeMessage()
     })
-    // start typing characters
-    typewriter.then(() => {
-      let message = this.state.message.split('')
-      let counter = 0
+  }
 
-      // Declare inteveral at class level to allow componentWillUnmount to cancel if necessary
-      this.carraige = setInterval(() => {
-        if (message.length > 0) {
-          this.setState({
-            visibleChars: this.state.visibleChars + message.shift(),
-            hiddenChars: message.join('')
-          })
-          counter++
-        } else {
-          clearInterval(this.carraige)
-        }
-      }, this.props.keystrokeDelay)
+  componentWillReceiveProps (next) {
+    clearInterval(this.typeKeystrokeInterval)
+    clearTimeout(this.typeStartTimeout)
+
+    this.setState({status: next.status}, () => {
+      this.typeMessage()
     })
   }
 
   componentWillUnmount () {
-    // TODO implement reverse type effect.
     // clear timeout and intervals
-    clearTimeout(this.typewriter)
-    clearInterval(this.carraige)
-    console.log('leaving')
-    return false
+    clearTimeout(this.typeStartTimeout)
+    clearInterval(this.typeKeystrokeInterval)
+  } // end componentWillUnmount
+
+  typeMessage () {
+    // assign delays based on typing direction
+    let startDelay = this.state.status === 'typing' ? this.props.startDelay : 300
+    let keystrokeDelay = this.state.status === 'typing' ? this.props.keystrokeDelay : 30
+
+    this.typeStartTimeout = setTimeout(() => {
+      this.typeKeystrokeInterval = setInterval(() => {
+        // set defaults
+        let {visibleChars, hiddenChars} = this.state
+        let completed = null
+        let completeType = null
+
+        if (this.state.status === 'typing') {
+          // move caret to the right
+          visibleChars += hiddenChars.slice(0, 1)
+          hiddenChars = hiddenChars.slice(1, hiddenChars.length)
+          completed = hiddenChars.length === 0
+          completeType = 'typing'
+        } else {
+          // move carat left
+          hiddenChars = visibleChars.slice(visibleChars.length - 1, visibleChars.length) + hiddenChars
+          visibleChars = visibleChars.slice(0, visibleChars.length - 1)
+          completed = visibleChars.length === 0
+          completeType = 'deleting'
+        }
+
+        // set state to current values
+        this.setState({
+          visibleChars,
+          hiddenChars,
+          status: completed ? 'idle' : completeType
+        })
+
+        if (completed) {
+          this.props.onFinish(completeType)
+          clearInterval(this.typeKeystrokeInterval)
+        }
+      }, keystrokeDelay)
+    }, startDelay)
   }
 
   render () {
-    let counter = 0
     const {visibleChars, hiddenChars} = this.state
-    const visChars = visibleChars.split('').map((char) => (
-      <span key={counter++}>{char}</span>
-    ))
-    const hidChars = hiddenChars.split('').map((char) => (
-      <span key={counter++}>{char}</span>
-    ))
-
     return (
       <div className='typewriter'>
-        <CSSTransitionGroup
-          className='typewriter__carriage'
-          transitionName='typewriter__character'
-          transitionEnterTimeout={this.props.enterTimeout}
-          transitionLeaveTimeout={this.props.leaveTimeout}
-        >
-          {visChars}
-        </CSSTransitionGroup>
-        <span className='typewriter__caret'></span>
-        <span className='typewriter__text--hide'>
-          {hidChars}
-        </span>
+        <TypeWriterCarriage
+          visible={visibleChars}
+          hidden={hiddenChars}
+        />
       </div>
     )
   }
 }
-const { number, string } = React.PropTypes
+
+const { number, string, func } = React.PropTypes
 
 TypeWriter.propTypes = {
+  status: string,
   message: string,
   startDelay: number,
   keystrokeDelay: number,
-  enterTimeout: number,
-  leaveTimeout: number
+  onFinish: func
 }

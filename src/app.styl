@@ -1,29 +1,26 @@
 @import url(https://fonts.googleapis.com/css?family=Jura:300);
 @import './style/variables.styl'
+
+html,body
+  min-height: 100%
+  display: flex
+  width: 100%
+  align-items: stretch
+  align-content: stretch
 body
   background-color: $background-color
   color $primary-color
   text-shadow: $text-shadow
-  font-family: 'Jura', Helvetica, Arial, sans-serif
+  font-family: $primary-font
   font-weight: 300
   text-align: center
+  // display: flex
+  // flex-grow: 100
+  // align-items: center
 
-// TODO move this to component
-.prompt
-  &__button-container
-    font-size: 30px
-    margin-top: 40px
-  &__button-container button
-    color: $primary-color
-    padding: 15px 0
-    display: inline-block;
-    margin: 0 8px
-    background-color: transparent
-    border: 1px solid transparent;
-    text-transform: uppercase
-    text-shadow: $text-shadow
-    width: 100px
-    transition: all .5s ease-in-out
-    &:hover
-      border-color: $primary-color
-      box-shadow: 0 0 7px rgba(226,247, 255, .5)
+#root
+  margin: 0 auto;
+  max-width: 500px;
+  display: flex
+  align-content: stretch
+  align-items: stretch
