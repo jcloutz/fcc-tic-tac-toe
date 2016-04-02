@@ -21,7 +21,7 @@ class PlayerCount extends React.Component {
       hashHistory.push('/players')
     }
   }
-  handlePlayerCountClick(count) {
+  handlePlayerCountClick (count) {
     console.log(count)
     hashHistory.push('/')
   }
