@@ -12,7 +12,7 @@ const TypeWriterCarriage = ({ visible, hidden }) => {
 
   return (
     <div>
-      {visChars}
+      > {visChars}
       <span className='typewriter__caret'></span>
       <span className='typewriter__text--hide'>
         {hidChars}
@@ -21,7 +21,7 @@ const TypeWriterCarriage = ({ visible, hidden }) => {
   )
 }
 
-const { string, number } = React.PropTypes
+const { string } = React.PropTypes
 
 TypeWriterCarriage.propTypes = {
   visible: string,
