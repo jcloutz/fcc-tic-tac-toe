@@ -1,6 +1,5 @@
 import React from 'react'
 import TypeWriterCarriage from './TypeWriterCarriage'
-require('./typewriter.styl')
 
 export default class TypeWriter extends React.Component {
   constructor (props) {

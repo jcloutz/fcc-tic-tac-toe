@@ -4,7 +4,7 @@ import { render } from 'react-dom'
 import Layout from './components/Layout'
 import InitialPrompt from './components/InitialPrompt'
 import PlayerCountPrompt from './components/PlayerCountPrompt'
-require('./app.styl')
+require('./style/app.styl')
 
 const App = () => (
   <Router history={hashHistory}>
