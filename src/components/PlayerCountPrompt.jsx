@@ -1,6 +1,6 @@
 import React from 'react'
-import TypeWriter from '../TypeWriter'
-import InputContainer from '../InputContainer'
+import Typewriter from './Typewriter'
+import InputContainer from './InputContainer'
 import { hashHistory } from 'react-router'
 
 class PlayerCount extends React.Component {
@@ -9,10 +9,10 @@ class PlayerCount extends React.Component {
     this.state = {
       showOptions: false
     }
-    this.handleTypeWriterFinishEvent = this.handleTypeWriterFinishEvent.bind(this)
+    this.handleTypewriterFinishEvent = this.handleTypewriterFinishEvent.bind(this)
     this.handlePlayerCountClick = this.handlePlayerCountClick.bind(this)
   }
-  handleTypeWriterFinishEvent (type) {
+  handleTypewriterFinishEvent (type) {
     if (type === 'typing') {
       this.setState({
         showOptions: type === 'typing'
@@ -28,12 +28,12 @@ class PlayerCount extends React.Component {
   render () {
     return (
       <div>
-        <TypeWriter
+        <Typewriter
           message='How many players?'
           status='typing'
           startDelay={2000}
           keystrokeDelay={80}
-          onFinish={this.handleTypeWriterFinishEvent}
+          onFinish={this.handleTypewriterFinishEvent}
         />
         <InputContainer visible={this.state.showOptions}>
           <div>

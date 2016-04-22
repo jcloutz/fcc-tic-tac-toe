@@ -3,16 +3,16 @@ import React from 'react'
 const TypeWriterCarriage = ({ visible, hidden }) => {
   let counter = 0
 
-  const visChars = visible.split('').map((char) => (
+  const visChars = visible.map((char) => (
     <span key={counter++}>{char}</span>
   ))
-  const hidChars = hidden.split('').map((char) => (
+  const hidChars = hidden.map((char) => (
     <span key={counter++}>{char}</span>
   ))
 
   return (
     <div>
-      > {visChars}
+      {visChars}
       <span className='typewriter__caret'></span>
       <span className='typewriter__text--hide'>
         {hidChars}
@@ -21,11 +21,11 @@ const TypeWriterCarriage = ({ visible, hidden }) => {
   )
 }
 
-const { string } = React.PropTypes
+const { array } = React.PropTypes
 
 TypeWriterCarriage.propTypes = {
-  visible: string,
-  hidden: string
+  visible: array,
+  hidden: array
 }
 
 export default TypeWriterCarriage
