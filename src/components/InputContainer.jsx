@@ -1,5 +1,4 @@
 import React from 'react'
-require('./input-container.styl')
 
 const InputContainer = ({ visible, children }) => (
   <div className={'input-container ' + (visible ? 'input-container--show' : 'input-container--hide')}>
