@@ -1,0 +1,176 @@
+$board-size = 310px
+$bar-width = 6px
+$bar-offset = $bar-width / 2
+$primary-color = #E2F7FF
+
+
+body
+	background-color: #202123
+
+.board
+	width: $board-size
+	height: $board-size
+	margin: 50px auto
+	position: relative
+
+.board-cell-container
+	position: relative
+	display: flex
+	flex-wrap: wrap
+
+.board-cell
+	width: 103.3px
+	height: 103.3px
+	line-height: 103.3px
+	text-align: center
+	box-sizing: border-box
+	color: white
+	position: relative
+
+.board-cell:after,
+.board-cell:before
+	content: ''
+	position: absolute
+	top: 50%
+	left: 50%
+	// border: 1px solid red
+	transform: translate(-50%, -50%)
+
+
+.board-cell-o:after
+	width: 0
+	height: 0
+	border-radius: 100%
+	border: $bar-width solid $primary-color
+	opacity: 0
+	transition all .8s ease-in-out
+
+.board-cell-o.show:after
+	// border: $bar-width solid $primary-color
+	// box-shadow: 0 0 4px $primary-color
+	width: 73px - (2 * $bar-width)
+	height: 73px - (2 * $bar-width)
+	opacity: 1
+
+.board-cell-x:after,
+.board-cell-x:before
+	left: 10px
+	// box-shadow: 0 0 4px $primary-color
+	border-radius: 1px
+	transform-origin: 50% 50%
+	opacity: 0
+	transform: rotate(0)
+	transition: all .8s ease-in-out
+
+.board-cell-x:after
+	width: 83px
+	height: $bar-width
+	background-color: $primary-color
+	top: "calc(50% - %s)" % $bar-offset
+
+.board-cell-x:before
+	opacity: 0
+	width: 83px
+	height: $bar-width
+	background-color: $primary-color
+	top: "calc(50% - %s)" % $bar-offset
+
+.board-cell-x.show:after
+	opacity: 1
+	transform: rotate(225deg)
+
+.board-cell-x.show:before
+	opacity: 1
+	transform: rotate(315deg)
+
+
+.board-grid
+	position: absolute
+	top: 0
+	left: 0
+	width: $board-size
+	height: $board-size
+
+.horizontal-bars:before,
+.horizontal-bars:after,
+.vertical-bars:before,
+.vertical-bars:after
+	content: ''
+	position: absolute
+	background-color: $primary-color
+	transform-origin: 50% 50%
+	border-radius: 1px
+	// box-shadow: 0 0 4px $primary-color
+	transition: top .8s ease-in-out,
+		left .8s ease-in-out,
+		transform .8s ease-in-out .8s,
+		opacity .8s ease-in-out 1.6s
+
+
+.horizontal-bars:before,
+.horizontal-bars:after
+	left: $bar-offset
+	height: $bar-width
+	width: $board-size - $bar-width
+	transform: rotate(180deg)
+	opacity: 0
+
+.horizontal-bars:before,
+.horizontal-bars:after
+	top: "calc(50% - %s)" % $bar-offset
+
+.show-grid .horizontal-bars:after,
+.show-grid .horizontal-bars:before,
+.show-grid .vertical-bars:before,
+.show-grid .vertical-bars:after
+	transition: opacity .8s ease-in-out,
+		transform .8s ease-in-out .8s,
+		top .8s ease-in-out 1.6s,
+		left .8s ease-in-out 1.6s
+
+.show-grid .horizontal-bars:after,
+.show-grid .horizontal-bars:before
+	transform: rotate(0deg)
+	opacity: 1
+
+.show-grid .horizontal-bars:after
+	top: "calc(33.33333% - %s)" % $bar-offset
+.show-grid .horizontal-bars:before
+	top: "calc(66.66666% - %s)" % $bar-offset
+
+.vertical-bars:before,
+.vertical-bars:after
+	top: $bar-offset
+	height: $board-size - $bar-width
+	width: $bar-width
+	transform: rotate(270deg)
+	opacity: 0
+
+.vertical-bars:before,
+.vertical-bars:after
+	left: "calc(50% - %s)" % $bar-offset
+
+.show-grid .vertical-bars:before,
+.show-grid .vertical-bars:after
+		transform: rotate(0deg)
+		opacity: 1
+
+.show-grid .vertical-bars:before
+	left: "calc(33.33333% - %s)" % $bar-offset
+
+.show-grid .vertical-bars:after
+	left: "calc(66.66666% - %s)" % $bar-offset
+
+#toggleBoard
+	font-weight: 100
+	margin: 30px auto
+	display: block
+	color: $primary-color
+	padding: 10px 15px
+	border: 1px solid transparent
+	background-color: transparent
+	transition: all .4s ease-in-out
+	&:focus
+		outline: none
+	&:hover
+		border-color: $primary-color

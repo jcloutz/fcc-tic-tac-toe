@@ -11,3 +11,10 @@ export const setPlayer1Side = (side) => {
     side
   }
 }
+
+export const setBoardCellContent = (marker) => {
+  return {
+    type: 'SET_BOARD_CELL_CONTENT',
+    content: marker
+  }
+}
