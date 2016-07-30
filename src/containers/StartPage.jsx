@@ -2,15 +2,16 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Prompt from '../components/Prompt'
 import { hashHistory } from 'react-router'
+import { startGame } from '../modules/game'
 
-const StartPage = ({ dispatch }) => (
+const StartPage = ({ startGame }) => (
   <Prompt
     message='Would you like to play a game?'
   >
     <button
       onClick={() => {
-        dispatch({type: 'START_GAME'})
-        hashHistory.push('/players')
+        startGame()
+        hashHistory.push('/choose-side')
       }}
     >
       Start
@@ -24,4 +25,4 @@ StartPage.propTypes = {
   dispatch: func
 }
 
-export default connect()(StartPage)
+export default connect(() => ({}), { startGame })(StartPage)
