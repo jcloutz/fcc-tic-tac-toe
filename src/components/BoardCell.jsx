@@ -1,22 +1,41 @@
 import React from 'react'
 
 const BoardCell = ({
-  marker
+  marker,
+  row,
+  cell,
+  handleCellClick
 }) => {
   let contentClass
 
   switch (marker) {
-    case 'X':
-      contentClass = 'board-cell-x'
+    case 'x':
+      contentClass = 'board-cell-x show'
       break
-    case 'O':
-      contentClass = 'board-cell-o'
+    case 'o':
+      contentClass = 'board-cell-o show'
       break
     default:
       contentClass = ''
   }
 
   return (
-    <div className={'board-cell ' + contentClass}></div>
+    <div
+      className={'board-cell ' + contentClass}
+      onClick={() => {
+        if (!marker) handleCellClick(row, cell)
+      }}>
+    </div>
   )
 }
+
+const { string, number, func } = React.PropTypes
+
+BoardCell.propTypes = {
+  marker: string,
+  row: number,
+  cell: number,
+  handleCellClick: func
+}
+
+export default BoardCell

@@ -1,13 +1,11 @@
-import Board from './board'
-
 class AIPlayer {
-  constructor (side = board.X, board) {
+  constructor (side, board, depth = 2) {
     this.side = side
-    this.oppSide = this.side === Board.X ? Board.O : Board.X
+    this.oppSide = this.side === 'X' ? 'O' : 'X'
     this.board = board
-    this.depth = 2
+    this.depth = depth
+    this.winner = null
 
-    this.minimax = this.minimax.bind(this)
     this.getNextMoves = this.getNextMoves.bind(this)
     this.gameOver = this.gameOver.bind(this)
     this.evaluateBoard = this.evaluateBoard.bind(this)
@@ -22,49 +20,64 @@ class AIPlayer {
   minimax (depth, side) {
     // console.log('running minimax for ', side)
     const moves = this.getNextMoves()
+    // console.log(moves)
     let bestScore = side === this.side ? -5000 : 5000
     let bestMove = [-1, -1]
-    // console.log('depth:', depth, ', open cells:', moves)
+    // console.log('depth:', depth, ', open cells:', moves.length)
     if (moves.length === 0 || depth === 0) {
       bestScore = this.evaluateBoard()
+      // console.log(bestScore, 'depth:', depth, 'moves left:', moves.length)
     } else {
       for (let i = 0; i < moves.length; i++) {
-        if (this.depth === depth) console.log(moves[i], '----------------')
-        console.log('----', depth, '----')
-        this.board.setCellValue(side, moves[i])
+        let [row, col] = moves[i]
+        this.board[row][col] = side
+        if (depth === 4) {
+          // console.log('checking side', side)
+        }
         if (side === this.side) { // maximize ai player
+          // console.log('+maximizing', this.oppSide)
           let score = this.minimax(depth - 1, this.oppSide)
           if (score.bestScore > bestScore) {
             bestScore = score.bestScore
             bestMove = moves[i]
-            console.log('best max score:', score.bestScore, '>', bestScore, 'best move:', moves[i])
+            if (depth === 4 || depth === 3) {
+              // console.log('best max score:', score.bestScore, '>', bestScore, 'best move:', moves[i])
+            }
           }
         } else { // minimize opponent
+          // console.log('-minimizing', this.side)
           let score = this.minimax(depth - 1, this.side)
           if (score.bestScore < bestScore) {
             bestScore = score.bestScore
             bestMove = moves[i]
-            console.log('best min score:', score.bestScore, '<', bestScore, 'best move:', moves[i])
+            if (depth === 4 || depth === 3) {
+              // console.log('best min score:', score.bestScore, '<', bestScore, 'best move:', moves[i])
+            }
           }
         }
 
-        this.board.clearCell(moves[i])
+        this.board[row][col] = null
       }
     }
-    // console.log('Minimax return:', {bestScore, bestMove})
     return { bestScore, bestMove }
   }
 
   getNextMoves () {
     if (this.gameOver()) return []
-    return this.board.getOpenCells()
+
+    let openCells = []
+    for (let row = 0; row < this.board.length; row++) {
+      for (let cell = 0; cell < this.board[row].length; cell++) {
+        if (this.board[row][cell] === null) openCells.push([row, cell])
+      }
+    }
+    return openCells
   }
 
   gameOver () {
     for (let i = 0; i < AIPlayer.winningStates.length; i++) {
       let lineEval = this.evaluateLine(AIPlayer.winningStates[i])
       if (lineEval === 100 || lineEval === -100) {
-        // console.log('game over')
         return true
       }
     }
@@ -95,7 +108,8 @@ class AIPlayer {
     let lineScore = 0
 
     for (let i = 0; i < line.length; i++) {
-      let cellContent = this.board.getCellValue(line[i])
+      let [row, col] = line[i]
+      let cellContent = this.board[row][col]
       if (cellContent === this.side) {
         sideCount += 1
       } else if (cellContent === this.oppSide) {
@@ -104,11 +118,6 @@ class AIPlayer {
         emptyCount += 1
       }
     }
-    // console.log('=================================')
-    // console.log('Evaluating Line:', line)
-    // console.log('Side Count:', sideCount)
-    // console.log('Enemy Count:', enemyCount)
-    // console.log('Empty Count:', emptyCount)
     if (sideCount > 0 && enemyCount > 0) { // enemy and friendly present = 0
       return 0
     }
@@ -128,6 +137,7 @@ class AIPlayer {
         break
       case 3:
         lineScore = 100
+        this.winner = this.side
     }
 
     switch (enemyCount) {
@@ -139,9 +149,8 @@ class AIPlayer {
         break
       case 3:
         lineScore = -100
+        this.winner = this.oppSide
     }
-    // console.log('Line Score:', lineScore)
-    // console.log('=================================')
     return lineScore
   }
 }

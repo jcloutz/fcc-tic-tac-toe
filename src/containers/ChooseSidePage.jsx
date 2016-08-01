@@ -1,24 +1,24 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Prompt from '../components/Prompt'
-import { setPlayer1Side } from '../actions'
 import { hashHistory } from 'react-router'
+import { setPlayerMarker } from '../modules/game'
 
-const ChooseSidePage = ({ dispatch }) => (
+const ChooseSidePage = ({ setPlayerMarker }) => (
   <div>
     <Prompt
-      message='Choose Side For Player 1'
+      message='Choose Your Side.'
     >
       <div>
         <button onClick={() => {
-          dispatch(setPlayer1Side('X'))
+          setPlayerMarker('x')
           hashHistory.push('/play')
         }}
         >
           X
         </button>
         <button onClick={() => {
-          dispatch(setPlayer1Side('O'))
+          setPlayerMarker('o')
           hashHistory.push('/play')
         }}
         >
@@ -32,7 +32,8 @@ const ChooseSidePage = ({ dispatch }) => (
 const { func } = React.PropTypes
 
 ChooseSidePage.propTypes = {
-  dispatch: func
+  dispatch: func,
+  setPlayerMarker: func
 }
 
-export default connect()(ChooseSidePage)
+export default connect(() => ({}), { setPlayerMarker })(ChooseSidePage)

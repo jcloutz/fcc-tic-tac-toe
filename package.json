@@ -7,7 +7,7 @@
   "scripts": {
     "start": "hjs-dev-server",
     "build": "webpack",
-    "test": "NODE_ENV=test NODE_PATH=./ tape -r use-strict -r babel-register **/*.spec.js | tap-spec",
+    "test": "NODE_ENV=test NODE_PATH=./ tape -r babel-register **/*.spec.js | tap-spec",
     "deploy": "npm run build && surge -p public -d somedomain.com"
   },
   "devDependencies": {
@@ -29,11 +29,13 @@
     "style-loader": "^0.13.1",
     "stylus": "^0.54.2",
     "stylus-loader": "^2.0.0",
+    "tap-spec": "^4.1.1",
     "tape": "^4.5.1",
     "url-loader": "^0.5.7"
   },
   "dependencies": {
     "babel-register": "^6.7.2",
+    "file-loader": "^0.8.5",
     "react": "^0.14.8",
     "react-addons-css-transition-group": "^0.14.8",
     "react-dom": "^0.14.8",
