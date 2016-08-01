@@ -109,10 +109,36 @@ test('evaluate blocking move for X', (t) => {
   const board = [
     ['O', null, 'O'],
     [null, null, null],
-    [null, null, null]
+    ['X', null, null]
   ]
 
-  const player = new AIPlayer('X', board, 2)
+  const player = new AIPlayer('X', board, 4)
+
+  t.deepEqual(player.move(), [0, 1], 'Should return [0, 1] as a blocking move')
+  t.end()
+})
+
+test('evaluate blocking move for X', (t) => {
+  const board = [
+    ['O', null, 'O'],
+    [null, null, null],
+    ['X', null, 'X']
+  ]
+
+  const player = new AIPlayer('X', board, 4)
+
+  t.deepEqual(player.move(), [2, 1], 'Should return [2, 1] as a winning move')
+  t.end()
+})
+
+test('evaluate blocking move for X', (t) => {
+  const board = [
+    ['X', null, null],
+    [null, 'O', null],
+    [null, 'O', null]
+  ]
+
+  const player = new AIPlayer('X', board, 4)
 
   t.deepEqual(player.move(), [0, 1], 'Should return [0, 1] as a blocking move')
   t.end()

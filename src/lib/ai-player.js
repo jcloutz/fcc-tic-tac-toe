@@ -1,5 +1,5 @@
 class AIPlayer {
-  constructor (side, board, depth = 2) {
+  constructor (side, board, depth = 4) {
     this.side = side
     this.oppSide = this.side === 'X' ? 'O' : 'X'
     this.board = board
@@ -19,28 +19,39 @@ class AIPlayer {
   minimax (depth, side) {
     // console.log('running minimax for ', side)
     const moves = this.getNextMoves()
+    // console.log(moves)
     let bestScore = side === this.side ? -5000 : 5000
     let bestMove = [-1, -1]
-    // console.log('depth:', depth, ', open cells:', moves)
+    // console.log('depth:', depth, ', open cells:', moves.length)
     if (moves.length === 0 || depth === 0) {
       bestScore = this.evaluateBoard()
+      // console.log(bestScore, 'depth:', depth, 'moves left:', moves.length)
     } else {
       for (let i = 0; i < moves.length; i++) {
         let [row, col] = moves[i]
         this.board[row][col] = side
+        if (depth === 4) {
+          console.log('checking side', side)
+        }
         if (side === this.side) { // maximize ai player
+          // console.log('+maximizing', this.oppSide)
           let score = this.minimax(depth - 1, this.oppSide)
           if (score.bestScore > bestScore) {
             bestScore = score.bestScore
             bestMove = moves[i]
-            // console.log('best max score:', score.bestScore, '>', bestScore, 'best move:', moves[i])
+            if (depth === 4 || depth === 3) {
+              console.log('best max score:', score.bestScore, '>', bestScore, 'best move:', moves[i])
+            }
           }
         } else { // minimize opponent
+          // console.log('-minimizing', this.side)
           let score = this.minimax(depth - 1, this.side)
           if (score.bestScore < bestScore) {
             bestScore = score.bestScore
             bestMove = moves[i]
-            // console.log('best min score:', score.bestScore, '<', bestScore, 'best move:', moves[i])
+            if (depth === 4 || depth === 3) {
+              console.log('best min score:', score.bestScore, '<', bestScore, 'best move:', moves[i])
+            }
           }
         }
 
