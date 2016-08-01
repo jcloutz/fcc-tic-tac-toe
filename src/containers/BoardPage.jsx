@@ -17,19 +17,21 @@ class BoardPage extends Component {
         activePlayer={this.props.game.activePlayer}
         setGameOver={this.props.gameOver}
         gameOver={this.props.game.gameOver}
+        winner={this.props.game.winner}
       />
     )
   }
 }
 
-const { array, object, func } = PropTypes
+const { array, object, func, bool } = PropTypes
 
 BoardPage.propTypes = {
   board: array,
   game: object,
   placeMarker: func,
   toggleActivePlayer: func,
-  gameOver: func
+  gameOver: func,
+  winner: bool
 }
 const mapStateToProps = ({ game, board }) => ({
   game,

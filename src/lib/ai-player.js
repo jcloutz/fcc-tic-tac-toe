@@ -1,9 +1,10 @@
 class AIPlayer {
-  constructor (side, board, depth = 4) {
+  constructor (side, board, depth = 2) {
     this.side = side
     this.oppSide = this.side === 'X' ? 'O' : 'X'
     this.board = board
     this.depth = depth
+    this.winner = null
 
     this.getNextMoves = this.getNextMoves.bind(this)
     this.gameOver = this.gameOver.bind(this)
@@ -31,7 +32,7 @@ class AIPlayer {
         let [row, col] = moves[i]
         this.board[row][col] = side
         if (depth === 4) {
-          console.log('checking side', side)
+          // console.log('checking side', side)
         }
         if (side === this.side) { // maximize ai player
           // console.log('+maximizing', this.oppSide)
@@ -40,7 +41,7 @@ class AIPlayer {
             bestScore = score.bestScore
             bestMove = moves[i]
             if (depth === 4 || depth === 3) {
-              console.log('best max score:', score.bestScore, '>', bestScore, 'best move:', moves[i])
+              // console.log('best max score:', score.bestScore, '>', bestScore, 'best move:', moves[i])
             }
           }
         } else { // minimize opponent
@@ -50,7 +51,7 @@ class AIPlayer {
             bestScore = score.bestScore
             bestMove = moves[i]
             if (depth === 4 || depth === 3) {
-              console.log('best min score:', score.bestScore, '<', bestScore, 'best move:', moves[i])
+              // console.log('best min score:', score.bestScore, '<', bestScore, 'best move:', moves[i])
             }
           }
         }
@@ -136,6 +137,7 @@ class AIPlayer {
         break
       case 3:
         lineScore = 100
+        this.winner = this.side
     }
 
     switch (enemyCount) {
@@ -147,6 +149,7 @@ class AIPlayer {
         break
       case 3:
         lineScore = -100
+        this.winner = this.oppSide
     }
     return lineScore
   }

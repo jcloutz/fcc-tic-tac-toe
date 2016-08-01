@@ -143,3 +143,16 @@ test('evaluate blocking move for X', (t) => {
   t.deepEqual(player.move(), [0, 1], 'Should return [0, 1] as a blocking move')
   t.end()
 })
+
+test('evaluate blocking move for X', (t) => {
+  const board = [
+    ['O', 'X', null],
+    [null, 'O', null],
+    ['X', null, 'X']
+  ]
+
+  const player = new AIPlayer('X', board, 2)
+
+  t.deepEqual(player.move(), [2, 1], 'Should return [2, 1] as a blocking move')
+  t.end()
+})
