@@ -1,7 +1,7 @@
 import React from 'react'
-import TypewriterCarriage from './TypewriterCarriage'
+import ConsoleLine from './ConsoleLine'
 
-class Typewriter extends React.Component {
+class Console extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -57,7 +57,7 @@ class Typewriter extends React.Component {
     const {visibleChars, hiddenChars} = this.state
     return (
       <div className='typewriter'>
-        <TypewriterCarriage
+        <ConsoleLine
           visible={visibleChars}
           hidden={hiddenChars}
         />
@@ -68,7 +68,7 @@ class Typewriter extends React.Component {
 
 const { number, string, func } = React.PropTypes
 
-Typewriter.propTypes = {
+Console.propTypes = {
   status: string,
   message: string,
   startDelay: number,
@@ -76,10 +76,10 @@ Typewriter.propTypes = {
   onFinish: func
 }
 
-Typewriter.defaultProps = {
-  message: 'No Message',
+Console.defaultProps = {
+  message: '',
   startDelay: 1500,
   keystrokeDelay: 30
 }
 
-export default Typewriter
+export default Console

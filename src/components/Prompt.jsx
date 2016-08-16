@@ -1,5 +1,5 @@
 import React from 'react'
-import Typewriter from './Typewriter'
+import Console from './Console'
 import InputContainer from './InputContainer'
 
 class Prompt extends React.Component {
@@ -10,10 +10,10 @@ class Prompt extends React.Component {
       showInput: false
     }
 
-    this.handleTypewriterFinish = this.handleTypewriterFinish.bind(this)
+    this.handleConsoleFinish = this.handleConsoleFinish.bind(this)
   }
 
-  handleTypewriterFinish () {
+  handleConsoleFinish () {
     this.setState({
       showInput: true
     })
@@ -24,8 +24,8 @@ class Prompt extends React.Component {
     const { showInput } = this.state
     return (
       <div>
-        <Typewriter
-          onFinish={this.handleTypewriterFinish}
+        <Console
+          onFinish={this.handleConsoleFinish}
           keystrokeDelay={keystrokeDelay}
           startDelay={startDelay}
           message={message}
