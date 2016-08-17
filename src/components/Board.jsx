@@ -1,30 +1,20 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import BoardCell from './boardCell'
+import { placeMarker } from '../modules/board'
+import { gameStates } from '../modules/gameState'
 
 class Board extends Component {
   constructor (props) {
     super(props)
-
-    this.state = {
-      showGrid: false,
-      clickEnabled: false
-    }
     this.handleCellClick = this.handleCellClick.bind(this)
     // this.handleAITurn = this.handleAITurn.bind(this)
   }
 
-  componentDidMount () {
-    setTimeout(() => {
-      this.setState({ showGrid: true })
-      setTimeout(() => {
-        this.setState({ clickEnabled: true })
-      }, 2400)
-    }, 1500)
-  }
-
   handleCellClick (row, cell) {
-    if (!this.props.gameOver && this.state.clickEnabled) {
-      const { placeMarker, activePlayer } = this.props
+    if (!this.props.game.winner && this.props.board.clickable && gameStates.GAME_PLAY === this.props.gameState) {
+      const { placeMarker } = this.props
+      const { activePlayer } = this.props.game
 
       placeMarker({
         row,
@@ -36,15 +26,15 @@ class Board extends Component {
 
   render () {
     const { board } = this.props
-    const showGridClass = this.state.showGrid ? 'show-grid' : ''
+    const showGridClass = board.visible ? 'show-grid' : ''
 
     let cells = []
-    for (let row = 0; row < board.length; row++) {
-      for (let cell = 0; cell < board[row].length; cell++) {
+    for (let row = 0; row < board.cells.length; row++) {
+      for (let cell = 0; cell < board.cells[row].length; cell++) {
         cells.push(
           <BoardCell
             key={`${row}-${cell}`}
-            marker={board[row][cell]}
+            marker={board.cells[row][cell]}
             row={row}
             cell={cell}
             handleCellClick={this.handleCellClick}
@@ -54,8 +44,6 @@ class Board extends Component {
     }
     return (
       <div>
-        {this.props.gameOver && 'Game Over ' + this.props.winner + ' wins'}
-        {this.state.showGrid}
         <div className={'board ' + showGridClass}>
           <div className='board-grid'>
             <div className='horizontal-bars'></div>
@@ -70,14 +58,22 @@ class Board extends Component {
   }
 }
 
-const { array, string, func, bool } = PropTypes
+const { object, string, bool, func } = PropTypes
 Board.propTypes = {
-  board: array,
-  placeMarker: func,
-  activePlayer: string,
-  aiMarker: string,
+  board: object,
+  gameState: string,
   gameOver: bool,
-  winner: string
+  game: object,
+  placeMarker: func
 }
 
-export default Board
+export default connect(
+  state => ({
+    game: state.game,
+    gameState: state.gameState,
+    board: state.board
+  }),
+  {
+    placeMarker
+  }
+)(Board)

@@ -24,6 +24,5 @@ export default store => next => action => {
       store.dispatch(setNextMove(game.move()))
     }
   }
-
   return next(action)
 }

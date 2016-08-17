@@ -1,6 +1,6 @@
 import React from 'react'
 
-const TypeWriterCarriage = ({ visible, hidden }) => {
+const ConsoleLine = ({ visible, hidden }) => {
   let counter = 0
 
   const visChars = visible.map((char) => (
@@ -11,21 +11,21 @@ const TypeWriterCarriage = ({ visible, hidden }) => {
   ))
 
   return (
-    <div>
+    <span>
       {visChars}
       <span className='typewriter__caret'></span>
       <span className='typewriter__text--hide'>
-        {hidChars}
+        {hidChars}-
       </span>
-    </div>
+    </span>
   )
 }
 
 const { array } = React.PropTypes
 
-TypeWriterCarriage.propTypes = {
+ConsoleLine.propTypes = {
   visible: array,
   hidden: array
 }
 
-export default TypeWriterCarriage
+export default ConsoleLine
