@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 const BoardCell = ({
   marker,
@@ -6,25 +7,31 @@ const BoardCell = ({
   cell,
   handleCellClick
 }) => {
-  let contentClass
+  let content
 
   switch (marker) {
     case 'x':
-      contentClass = 'board-cell-x show'
+      content = <div className='board-cell-marker board-cell-marker__x' />
       break
     case 'o':
-      contentClass = 'board-cell-o show'
+      content = <div className='board-cell-marker board-cell-marker__o' />
       break
     default:
-      contentClass = ''
+      content = null
   }
 
   return (
     <div
-      className={'board-cell ' + contentClass}
+      className={'board-cell'}
       onClick={() => {
         if (!marker) handleCellClick(row, cell)
       }}>
+      <ReactCSSTransitionGroup
+        transitionName='board-cell-marker'
+        transitionEnterTimeout={800}
+        transitionLeaveTimeout={800}>
+      {content}
+      </ReactCSSTransitionGroup>
     </div>
   )
 }

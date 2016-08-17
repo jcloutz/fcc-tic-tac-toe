@@ -1,0 +1,93 @@
+.board-cell-marker
+	width: 103.3px
+	height: 103.3px
+	line-height: 103.3px
+	text-align: center
+	box-sizing: border-box
+	color: white
+	position: relative
+
+[class^='board-cell-marker']:before,
+[class^='board-cell-marker']:after
+	content: ''
+	position: absolute
+	top: 50%
+	left: 50%
+	transform-origin: 50% 50%
+	// border: 1px solid red
+	height: 0px
+	width: 0px
+	opacity: 0
+
+.board-cell-marker__o:after
+	width: 0
+	height: 0
+	border-radius: 100%
+	border: $bar-width solid $primary-color
+	transform: translate(-50%, -50%)
+	opacity: 0
+	transition: height .8s ease-in-out, width .8s ease-in-out, opacity .8s ease-in-out
+	width: 73px - (2 * $bar-width)
+	height: 73px - (2 * $bar-width)
+	opacity: 1
+
+// .board-cell-marker-appear:after,
+.board-cell-marker__o.board-cell-marker-enter:after
+	opacity: 0
+	width: 0
+	height: 0
+	border-radius: 100%
+	border: $bar-width solid $primary-color
+
+// .board-cell-marker-appear.board-cell-marker-appear-active:after,
+.board-cell-marker__o.board-cell-marker-enter.board-cell-marker-enter-active:after
+	transition: height .8s ease-in-out, width .8s ease-in-out, opacity .8s ease-in-out
+	width: 73px - (2 * $bar-width)
+	height: 73px - (2 * $bar-width)
+	opacity: 1
+
+.board-cell-marker__o.board-cell-marker-leave:after
+	transition: height .8s ease-in-out, width .8s ease-in-out, opacity .8s ease-in-out
+.board-cell-marker__o.board-cell-marker-leave.board-cell-marker-leave-active:after
+	width: 0
+	height: 0
+	opacity: 0
+
+
+.board-cell-marker__x:before,
+.board-cell-marker__x:after
+	left: 10px
+	border-radius: 1px
+	transform-origin: 50% 50%
+	opacity: 1
+	height: $bar-width
+	width: 83px
+	background-color: $primary-color
+	transition: opacity .8s ease-in-out, transform .8s ease-in-out
+
+.board-cell-marker__x:before
+	top: "calc(50% - %s)" % $bar-offset
+	transform: rotate(315deg)
+
+.board-cell-marker__x:after
+	top: "calc(50% - %s)" % $bar-offset
+	opacity: 1
+	transform: rotate(225deg)
+
+.board-cell-marker__x.board-cell-marker-enter:before,
+.board-cell-marker__x.board-cell-marker-enter:after
+	transform: rotate(0)
+	opacity: 0
+
+.board-cell-marker__x.board-cell-marker-enter.board-cell-marker-enter-active:before
+	transform: rotate(315deg)
+	opacity: 1
+
+.board-cell-marker__x.board-cell-marker-enter.board-cell-marker-enter-active:after
+	transform: rotate(225deg)
+	opacity: 1
+
+.board-cell-marker__x.board-cell-marker-leave.board-cell-marker-leave-active:before,
+.board-cell-marker__x.board-cell-marker-leave.board-cell-marker-leave-active:after
+	opacity: 0
+	transform: rotate(0)

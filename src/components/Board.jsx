@@ -50,7 +50,7 @@ class Board extends Component {
             <div className='vertical-bars'></div>
           </div>
           <div className='board-cell-container'>
-            {cells}
+              {cells}
           </div>
         </div>
       </div>
