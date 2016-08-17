@@ -5,7 +5,8 @@ const RESET = 'RESET'
 const initialState = {
   playerMarker: null,
   aiMarker: null,
-  activePlayer: 'x'
+  activePlayer: 'x',
+  winner: null
 }
 
 const reducer = (state = initialState, action) => {
