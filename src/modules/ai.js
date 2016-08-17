@@ -1,5 +1,5 @@
 // this action will be intercepted by middleware to trigger the ai making a play
-export const HANDLE_AI_PLAY = 'fcc-tic-tac-toe/modules/HANDLE_AI_PLAY'
+export const AI_PLAY = 'fcc-tic-tac-toe/modules/AI_PLAY'
 export const SET_NEXT_MOVE = 'fcc-tic-tac-toe/modules/SET_NEXT_MOVE'
 
 const initialState = {
@@ -16,8 +16,8 @@ export default (state = initialState, action) => {
   }
 }
 
-export const handleAIPlay = () => ({
-  type: HANDLE_AI_PLAY
+export const aiPlay = () => ({
+  type: AI_PLAY
 })
 
 export const setNextMove = ([row, cell]) => ({

@@ -4,6 +4,10 @@ export const SET_BOARD_VISIBILITY = 'fcc-tic-tac-toe/board/SET_BOARD_VISIBILITY'
 export const SET_BOARD_CLICKABLE = 'fcc-tic-tac-toe/board/SET_BOARD_CLICKABLE'
 export const RESET_BOARD = 'fcc-tic-tac-toe/board/RESET_BOARD'
 
+// this action does not map to a state value. It is only meant to intercepted by
+// middleware to enable the AI to know it is time to move if it is up first.
+export const BOARD_READY = 'fcc-tic-tac-toe/board/BOARD_READY'
+
 const RESET = 'RESET'
 
 const initialState = {
@@ -30,7 +34,6 @@ export default (state = initialState, action) => {
       }
     case PLACE_MARKER:
       const { row, cell, marker } = action.payload
-      console.log('placing marker', action.payload)
       return {
         ...state,
         cells: getNewBoard(state.cells, row, cell, marker)
@@ -63,13 +66,17 @@ export const setBoardVisibility = (visible) => {
     // set board to clickable after css animation finishes
     if (visible === true) {
       setTimeout(() => {
-        dispatch(setBoardClickable(true))
-      }, 2400)
+        dispatch(boardReady())
+      }, 3200)
     } else { // set board to un-clickable immediately
       dispatch(setBoardClickable(false))
     }
   }
 }
+
+export const boardReady = () => ({
+  type: BOARD_READY
+})
 
 export const setBoardClickable = (clickable) => ({
   type: SET_BOARD_CLICKABLE,

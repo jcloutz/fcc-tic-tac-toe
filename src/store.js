@@ -1,19 +1,18 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import reducer from './modules/reducer'
 import thunk from 'redux-thunk'
-// import checkGameOver from './middleware/check-game-over'
 // import togglePlayer from './middleware/toggle-player'
-// import handleAIPlay from './middleware/handle-ai-play'
-// import initializeGame from './middleware/initialize-game'
+import boardReady from './middleware/board-ready'
+import handleAIPlay from './middleware/handle-ai-play'
+import checkGameOver from './middleware/check-game-over'
 
 const store = createStore(reducer, {},
   compose(
     applyMiddleware(
-      thunk
-      // initializeGame,
-      // checkGameOver,
-      // togglePlayer,
-      // handleAIPlay
+      thunk,
+      boardReady,
+      checkGameOver,
+      handleAIPlay
     ),
     window.devToolsExtension ? window.devToolsExtension() : f => f
   )

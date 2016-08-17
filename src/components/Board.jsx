@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import BoardCell from './boardCell'
 import { placeMarker } from '../modules/board'
 import { gameStates } from '../modules/gameState'
@@ -42,12 +43,21 @@ class Board extends Component {
         ) // end push
       }
     }
+
+    const gridBars = [
+      <div key='horizontal-bars' className='board-grid__bar--horizontal'></div>,
+      <div key='vertical-bars' className='board-grid__bar--vertical'></div>
+    ]
     return (
       <div>
         <div className={'board ' + showGridClass}>
           <div className='board-grid'>
-            <div className='horizontal-bars'></div>
-            <div className='vertical-bars'></div>
+            <ReactCSSTransitionGroup
+              transitionName='board-grid__bar'
+              transitionEnterTimeout={2400}
+              transitionLeaveTimeout={3200}>
+              {board.visible && gridBars}
+            </ReactCSSTransitionGroup>
           </div>
           <div className='board-cell-container'>
               {cells}
