@@ -78,7 +78,7 @@ Console.propTypes = {
 
 Console.defaultProps = {
   message: '',
-  startDelay: 1500,
+  startDelay: 800,
   keystrokeDelay: 30
 }
 

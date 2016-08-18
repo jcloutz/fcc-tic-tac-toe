@@ -61,9 +61,9 @@
   opacity: 1
   transform: rotate(0deg)
   transition: opacity .8s ease-in-out,
-    transform .8s ease-in-out .8s,
-    top .8s ease-in-out 1.6s,
-    left .8s ease-in-out 1.6s
+    transform .8s ease-in-out,
+    top .8s ease-in-out .8s,
+    left .8s ease-in-out .8s
 
 .board-grid__bar--horizontal.board-grid__bar-enter.board-grid__bar-enter-active:before
   top: "calc(66.66666% - %s)" % $bar-offset
@@ -81,10 +81,10 @@
 [class*='board-grid__bar'].board-grid__bar-leave.board-grid__bar-leave-active:before,
 [class*='board-grid__bar'].board-grid__bar-leave.board-grid__bar-leave-active:after
   opacity: 0
-  transition: top .8s ease-in-out .8s,
-    left .8s ease-in-out .8s,
-    transform .8s ease-in-out 1.6s,
-    opacity .8s ease-in-out 2.4s
+  transition: top .8s ease-in-out .4s,
+    left .8s ease-in-out .4s,
+    transform .8s ease-in-out 1.2s,
+    opacity .8s ease-in-out 2s
 
 .board-grid__bar--horizontal.board-grid__bar-leave.board-grid__bar-leave-active:before,
 .board-grid__bar--horizontal.board-grid__bar-leave.board-grid__bar-leave-active:after

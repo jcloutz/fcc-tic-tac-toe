@@ -5,6 +5,10 @@ import Ai from '../lib/ai-player'
 export default store => next => action => {
   if (action.type === AI_PLAY) {
     const state = store.getState()
+    const { cells } = state.board
+    console.log(cells[0][0], cells[0][1], cells[0][2])
+    console.log(cells[1][0], cells[1][1], cells[1][2])
+    console.log(cells[2][0], cells[2][1], cells[2][2])
     let game = new Ai(state.game.aiMarker, state.board.cells)
     const nextMove = game.move()
     store.dispatch(placeMarker({ row: nextMove[0], cell: nextMove[1], marker: state.game.aiMarker }))
