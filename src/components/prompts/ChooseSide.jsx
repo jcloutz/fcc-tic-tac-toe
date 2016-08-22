@@ -1,18 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Prompt from '../Prompt'
-import { setBoardVisibility } from '../../modules/board'
-import { setPlayerMarker } from '../../modules/game'
+import { setBoardVisibility, setPlayer } from '../../modules/board'
 import { nextGameState } from '../../modules/gameState'
 
-const ChooseSidePage = ({ setPlayerMarker, nextGameState, setBoardVisibility }) => (
+const ChooseSidePage = ({ setPlayer, nextGameState, setBoardVisibility }) => (
   <div>
     <Prompt
       message='Choose Your Side.'
     >
       <div>
         <button onClick={() => {
-          setPlayerMarker('x')
+          setPlayer('x')
           nextGameState()
           setBoardVisibility(true)
         }}
@@ -20,7 +19,7 @@ const ChooseSidePage = ({ setPlayerMarker, nextGameState, setBoardVisibility }) 
           X
         </button>
         <button onClick={() => {
-          setPlayerMarker('o')
+          setPlayer('o')
           nextGameState()
           setBoardVisibility(true)
         }}
@@ -36,8 +35,8 @@ const { func } = React.PropTypes
 
 ChooseSidePage.propTypes = {
   nextGameState: func,
-  setPlayerMarker: func,
+  setPlayer: func,
   setBoardVisibility: func
 }
 
-export default connect(() => ({}), { setPlayerMarker, nextGameState, setBoardVisibility })(ChooseSidePage)
+export default connect(() => ({}), { setPlayer, nextGameState, setBoardVisibility })(ChooseSidePage)

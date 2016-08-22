@@ -4,12 +4,12 @@ import Prompt from '../Prompt'
 import { setGameState, resetGame, gameStates } from '../../modules/gameState'
 import { resetBoard } from '../../modules/board'
 
-const GameOver = ({ setGameState, resetGame, resetBoard, game }) => {
+const GameOver = ({ setGameState, resetGame, resetBoard, board }) => {
   let message = ''
 
-  if (game.playerMarker === game.winner) {
+  if (board.player === board.winner) {
     message = 'You win, would you like to play again?'
-  } else if (game.aiMarker === game.winner) {
+  } else if (board.opponent === board.winner) {
     message = 'I win, would you like to play again?'
   } else { // draw
     message = 'Game is a draw, would you like to play again?'
@@ -45,9 +45,9 @@ GameOver.propTypes = {
   resetGame: func,
   setGameState: func,
   resetBoard: func,
-  game: object
+  board: object
 }
 
 export default connect((state) => ({
-  game: state.game
+  board: state.board
 }), { resetGame, setGameState, resetBoard })(GameOver)

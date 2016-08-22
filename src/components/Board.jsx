@@ -13,14 +13,14 @@ class Board extends Component {
   }
 
   handleCellClick (row, cell) {
-    if (!this.props.game.winner && this.props.board.clickable && gameStates.GAME_PLAY === this.props.gameState) {
+    if (!this.props.board.winner && this.props.board.clickable && gameStates.GAME_PLAY === this.props.gameState) {
       const { placeMarker } = this.props
-      const { activePlayer } = this.props.game
+      const { active } = this.props.board
 
       placeMarker({
         row,
         cell,
-        marker: activePlayer
+        marker: active
       })
     }
   }
@@ -73,13 +73,11 @@ Board.propTypes = {
   board: object,
   gameState: string,
   gameOver: bool,
-  game: object,
   placeMarker: func
 }
 
 export default connect(
   state => ({
-    game: state.game,
     gameState: state.gameState,
     board: state.board
   }),
