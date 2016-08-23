@@ -14,7 +14,6 @@ const prompts = {
 }
 
 const PromptManager = ({ gameState }) => {
-  console.log(gameState)
   if (!prompts[gameState]) {
     return <Prompt message='' />
   }

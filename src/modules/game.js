@@ -20,13 +20,26 @@ export const BOARD_READY = 'fcc-tic-tac-toe/board/BOARD_READY'
 
 const RESET = 'RESET'
 
+// define all possible winning board configurations
+const winningLines = [
+  [[0, 0], [0, 1], [0, 2]], // 1st row
+  [[1, 0], [1, 1], [1, 2]], // 2nd row
+  [[2, 0], [2, 1], [2, 2]], // 3rd row
+  [[0, 0], [1, 0], [2, 0]], // 1st column
+  [[0, 1], [1, 1], [2, 1]], // 2nd column
+  [[0, 2], [1, 2], [2, 2]], // 3rd column
+  [[0, 0], [1, 1], [2, 2]], // diag top left to bottom right
+  [[0, 2], [1, 1], [2, 0]] // diag top right to bottom left
+]
+
 export const initialState = {
   player1: null,
   player2: null,
-  active: 'x',
+  active: null,
   winner: null,
   visible: false,
   clickable: false,
+  ready: false,
   winningLine: null,
   gameOver: false,
   board: [
@@ -45,7 +58,8 @@ const boardReducer = (state = initialState, action) => {
       return {
         ...state,
         player1: action.payload,
-        player2: action.payload === 'x' ? 'o' : 'x'
+        player2: action.payload === 'x' ? 'o' : 'x',
+        active: 'x'
       }
     case SET_BOARD_VISIBILITY:
       return {
@@ -57,11 +71,18 @@ const boardReducer = (state = initialState, action) => {
         ...state,
         clickable: action.payload
       }
+    case BOARD_READY:
+      return {
+        ...state,
+        clickable: state.active === state.player1,
+        ready: true
+      }
     case PLACE_MARKER:
       const { row, cell, marker } = action.payload
       return {
         ...state,
         active: state.active === 'x' ? 'o' : 'x',
+        clickable: !state.clickable,
         board: getNewBoard(state.board, row, cell, marker)
       }
     case SET_WINNER:
@@ -86,7 +107,7 @@ const boardReducer = (state = initialState, action) => {
         active: 'x',
         winner: null,
         board: initialState.board,
-        clickable: true,
+        clickable: state.player1 === 'x',
         gameOver: false
       }
     case RESET:
@@ -239,6 +260,40 @@ const availableMoves = (board) => {
 }
 
 /**
+ * Check if the given possible move is valid based on the board contents.
+ * For instance if a line already contains an opponents mark then it is not
+ * winnable.
+ * @param  {object} current game state
+ * @param  {array} An array representing the possiblem move eg. [row, col]
+ * @param  {string} String representation of the marker to validate the line against.
+ * @return {Boolean}
+ */
+export const isPossibleLine = (gameState, [row, col], marker) => {
+  // get any lines that contain this cell
+  const candidateLines = winningLines.filter((candidate) => {
+    // does this candidate contain the desired cell?
+    const result = candidate.filter(cell => {
+      return cell[0] === row && cell[1] === col
+    }).length > 0
+
+    // possibly valid
+    if (result) {
+      const opponent = marker === gameState.player1
+                                  ? gameState.player2
+                                  : gameState.player1
+      // check line contents
+      const lineContent = getLineContent(gameState.board, candidate).join('')
+      if (lineContent.indexOf(opponent) > -1) {
+        return false
+      }
+      return true
+    }
+  })
+  // get candiate lines content
+  return candidateLines.length > 0
+}
+
+/**
  * Recursively evaluates moves for each cell on the board.
  *
  * @param  {Object} gameState    Current state of the game
@@ -246,12 +301,12 @@ const availableMoves = (board) => {
  * @param  {Number} [maxDepth=5] Maximum depth for the algorithm to evaluateBoard
  * @return {Number}              Best score for the given initial gameState
  */
-const minmax = (gameState, depth = 0, maxDepth = 5) => {
+const minmax = (gameState, depth = 0, maxDepth = 15) => {
   // Determine whether or not the game is over.
   // If it is or maximum depth is reached then return the score for the given
   // end state.
   const gameStatus = isGameOver(gameState)
-  if (gameStatus || depth >= maxDepth) {
+  if (gameStatus || depth > maxDepth) {
     return score(gameStatus, depth)
   }
 
@@ -265,14 +320,20 @@ const minmax = (gameState, depth = 0, maxDepth = 5) => {
     let moves = availableMoves(board)
     // evaluate each available move.
     moves.forEach(move => {
-      // get new state from the reducer by passing it the current move.
-      let newState = boardReducer(gameState, placeMarker({
-        row: move[0],
-        cell: move[1],
-        marker: active
-      }))
-      // pass new state to minmax and increment the depth
-      let newScore = minmax(newState, ++depth)
+      let newScore
+      if (isPossibleLine(gameState, move, player2)) {
+        // get new state from the reducer by passing it the current move.
+        let newState = boardReducer(gameState, placeMarker({
+          row: move[0],
+          cell: move[1],
+          marker: active
+        }))
+        // pass new state to minmax and increment the depth
+        newScore = minmax(newState, ++depth)
+      } else {
+        newScore = 0
+      }
+
       // change the best score if necessary.
       if (newScore > bestScore) {
         bestScore = newScore
@@ -287,14 +348,20 @@ const minmax = (gameState, depth = 0, maxDepth = 5) => {
     let moves = availableMoves(board)
     // evaluate each available move
     moves.forEach(move => {
+      let newScore
+      if (isPossibleLine(gameState, move, player1)) {
+        let newState = boardReducer(gameState, placeMarker({
+          row: move[0],
+          cell: move[1],
+          marker: active
+        }))
+        // Pass the new state to minmax and increment depth
+        newScore = minmax(newState, ++depth)
+      } else {
+        newScore = 0
+      }
       // Get new game state from the reducer based on the given move
-      let newState = boardReducer(gameState, placeMarker({
-        row: move[0],
-        cell: move[1],
-        marker: active
-      }))
-      // Pass the new state to minmax and increment depth
-      let newScore = minmax(newState, ++depth)
+
       // Change best score if necessary
       if (newScore < bestScore) {
         bestScore = newScore
@@ -356,10 +423,10 @@ const score = (gameState, depth) => {
   // If there is no winner it will return 0
   if (gameState.winner === gameState.player2) {
     // ai player wins
-    return 10 - depth
+    return 100 - depth
   } else if (gameState.winner === gameState.player1) {
     // human player wins
-    return depth - 10
+    return depth - 100
   } else {
     return 0 // draw
   }
@@ -389,6 +456,13 @@ export const isGameOver = (gameState) => {
   return false
 }
 
+export const getLineContent = (board, line) => {
+  return line.reduce((contents, [row, col]) => {
+    contents.push(board[row][col])
+    return contents
+  }, [])
+}
+
 /**
  * Checks all possible lines for a winner based on the given markers and board
  * @param  {array} board  2-Dimensional representation of the current board
@@ -399,24 +473,10 @@ export const isGameOver = (gameState) => {
  *                         `winner` and `winningLine`
  */
 export const getWinner = (board, ...markers) => {
-  const winningLines = [
-    [[0, 0], [0, 1], [0, 2]], // 1st row
-    [[1, 0], [1, 1], [1, 2]], // 2nd row
-    [[2, 0], [2, 1], [2, 2]], // 3rd row
-    [[0, 0], [1, 0], [2, 0]], // 1st column
-    [[0, 1], [1, 1], [2, 1]], // 2nd column
-    [[0, 2], [1, 2], [2, 2]], // 3rd column
-    [[0, 0], [1, 1], [2, 2]], // diag top left to bottom right
-    [[0, 2], [1, 1], [2, 0]] // diag top right to bottom left
-  ]
-
   // Evaluate each winning state.
   for (let i = 0; i < winningLines.length; i++) {
     // Gather line contents into an array
-    const lineContents = winningLines[i].reduce((contents, [row, col]) => {
-      contents.push(board[row][col])
-      return contents
-    }, [])
+    const lineContents = getLineContent(board, winningLines[i])
 
     // evaluate each given marker, ie x or o, but could be anything.
     const result = markers.reduce((r, marker) => {
