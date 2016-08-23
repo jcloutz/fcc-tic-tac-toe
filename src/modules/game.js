@@ -29,7 +29,7 @@ export const initialState = {
   clickable: false,
   winningLine: null,
   gameOver: false,
-  cells: [
+  board: [
     [null, null, null],
     [null, null, null],
     [null, null, null]
@@ -59,19 +59,18 @@ const boardReducer = (state = initialState, action) => {
       }
     case PLACE_MARKER:
       const { row, cell, marker } = action.payload
-      // @TODO: replace board contents with winning line
-      // @TODO: check for game over and act accordingly
       return {
         ...state,
         active: state.active === 'x' ? 'o' : 'x',
-        cells: getNewBoard(state.cells, row, cell, marker)
+        board: getNewBoard(state.board, row, cell, marker)
       }
     case SET_WINNER:
+      const { winningLine, winner } = action.payload
       return {
         ...state,
-        board: getWinningBoard(action.payload.winningLine, action.paylod.winner),
-        winner: action.payload.winner,
-        winningLine: action.payload.winningLine,
+        board: getWinningBoard(winningLine, winner),
+        winner: winner,
+        winningLine: winningLine,
         gameOver: true,
         clickable: false
       }
@@ -86,7 +85,7 @@ const boardReducer = (state = initialState, action) => {
         ...state,
         active: 'x',
         winner: null,
-        cells: initialState.cells,
+        board: initialState.board,
         clickable: true,
         gameOver: false
       }
@@ -218,7 +217,7 @@ export const getNewBoard = (boardCells, row, cell, marker) => {
 export const getWinningBoard = (winningLine, winner) => {
   return winningLine.reduce((board, cell) => {
     return getNewBoard(board, cell[0], cell[1], winner)
-  }, initialState.cells)
+  }, initialState.board)
 }
 
 /**
@@ -256,14 +255,14 @@ const minmax = (gameState, depth = 0, maxDepth = 5) => {
     return score(gameStatus, depth)
   }
 
-  const { player1, player2, active, cells } = gameState
+  const { player1, player2, active, board } = gameState
   let bestScore
 
   // This assumes that player 2 is the computer i.e. the AI. If it is the
   // ai's turn that the score needs to be maximized.
   if (active === player2) {
     bestScore = -9999
-    let moves = availableMoves(cells)
+    let moves = availableMoves(board)
     // evaluate each available move.
     moves.forEach(move => {
       // get new state from the reducer by passing it the current move.
@@ -285,7 +284,7 @@ const minmax = (gameState, depth = 0, maxDepth = 5) => {
   // then the score needs to minimized.
   if (active === player1) {
     bestScore = 9999
-    let moves = availableMoves(cells)
+    let moves = availableMoves(board)
     // evaluate each available move
     moves.forEach(move => {
       // Get new game state from the reducer based on the given move
@@ -309,7 +308,7 @@ const minmax = (gameState, depth = 0, maxDepth = 5) => {
 export const getBestMove = (gameState) => {
   let bestScore = -9999
   let bestMove = null
-  let moves = availableMoves(gameState.cells)
+  let moves = availableMoves(gameState.board)
 
   // Evaluate each available move
   moves.forEach(move => {
@@ -373,7 +372,7 @@ const score = (gameState, depth) => {
  */
 export const isGameOver = (gameState) => {
   // Determine whether the game is over
-  const gameResult = getWinner(gameState.cells, gameState.player1, gameState.player2)
+  const gameResult = getWinner(gameState.board, gameState.player1, gameState.player2)
 
   // if game is over then return a new game state from the reducer with the
   // winner
@@ -383,7 +382,7 @@ export const isGameOver = (gameState) => {
 
   // if availableMoves = 0 then get a new game state from the reducer with
   // gameOver set to true
-  if (availableMoves(gameState.cells).length === 0) {
+  if (availableMoves(gameState.board).length === 0) {
     return boardReducer(gameState, setGameOver())
   }
 

@@ -5,7 +5,7 @@ import {
         isWinningLine,
         getBestMove,
         getWinningBoard
-      } from '../src/modules/board'
+      } from '../src/modules/game'
 
 const initialTestState = {
   ...initialState,
@@ -91,7 +91,7 @@ test('getBestMove() should block', (t) => {
     player1: 'x',
     player2: 'o',
     active: 'o',
-    cells: [
+    board: [
       ['x', null, 'x'],
       ['o', null, null],
       [null, null, null]
@@ -110,7 +110,7 @@ test('getBestMove() should win', (t) => {
     player1: 'x',
     player2: 'o',
     active: 'o',
-    cells: [
+    board: [
       ['x', null, 'x'],
       ['o', null, 'o'],
       ['x', null, null]
@@ -129,7 +129,7 @@ test('getBestMove() should block', (t) => {
     player1: 'o',
     player2: 'x',
     active: 'x',
-    cells: [
+    board: [
       ['o', null, 'o'],
       [null, null, null],
       ['x', null, null]
@@ -148,7 +148,7 @@ test('getBestMove() should complete board', (t) => {
     player1: 'x',
     player2: 'o',
     active: 'o',
-    cells: [
+    board: [
       ['o', 'o', 'x'],
       ['x', 'x', 'o'],
       ['o', 'x', null]
