@@ -61,7 +61,7 @@ class Board extends Component {
   }
 
   render () {
-    const { board, visible } = this.props.game
+    const { board, visible, active, clickable } = this.props.game
 
     let cells = []
     for (let row = 0; row < board.length; row++) {
@@ -72,6 +72,8 @@ class Board extends Component {
             marker={board[row][cell]}
             row={row}
             cell={cell}
+            active={active}
+            clickable={clickable}
             handleCellClick={this.handleCellClick}
           />
         ) // end push

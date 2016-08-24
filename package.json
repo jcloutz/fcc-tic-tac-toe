@@ -1,9 +1,9 @@
 {
-  "name": "fcc-boilerplate",
-  "version": "1.3.2",
-  "description": "Basic boilerplate for building codepen.io ready projects locally utilizing, gulp, sass & browser-sync.",
+  "name": "fcc-tic-tac-toe",
+  "version": "1.0.0",
+  "description": "Tic Tac Toe Zipline solution for Free Code Camp",
   "author": "Jeremy Cloutier",
-  "license": "WTFPL",
+  "license": "",
   "scripts": {
     "start": "hjs-dev-server",
     "build": "webpack",
@@ -39,10 +39,8 @@
     "babel-register": "^6.7.2",
     "file-loader": "^0.8.5",
     "react": "^0.14.8",
-    "react-addons-css-transition-group": "^0.14.8",
     "react-dom": "^0.14.8",
     "react-redux": "^4.4.4",
-    "react-router": "^2.0.1",
     "redux": "^3.4.0"
   }
 }

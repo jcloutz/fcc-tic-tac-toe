@@ -34,6 +34,7 @@ export default () => (
         </a>
       </li>
     </ul>
+    <a href='#' className='footer__source-link'>View source on github</a>
   </div>
 
 )
