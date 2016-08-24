@@ -375,8 +375,13 @@ const minmax = (gameState, depth = 0, maxDepth = 15) => {
 export const getBestMove = (gameState) => {
   let bestScore = -9999
   let bestMove = null
+  const openingMoves = [[0, 0], [0, 2], [2, 0], [2, 2]]
   let moves = availableMoves(gameState.board)
 
+  if (moves.length === 9) {
+    const randIdx = Math.floor(Math.random() * 4)
+    return openingMoves[randIdx]
+  }
   // Evaluate each available move
   moves.forEach(move => {
     // Get new state based on the current move.

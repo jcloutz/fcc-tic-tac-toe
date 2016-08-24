@@ -180,6 +180,25 @@ test('getBestMove() should complete board', (t) => {
   t.end()
 })
 
+test('getBestMove() on empty board', (t) => {
+  const testState = {
+    ...initialTestState,
+    player1: 'o',
+    player2: 'x',
+    active: 'x',
+    board: [
+      [null, null, null],
+      [null, null, null],
+      [null, null, null]
+    ]
+  }
+
+  const test = getBestMove(testState)
+
+  t.deepEqual(test, [0, 0], 'Should equal [0, 0]')
+  t.end()
+})
+
 test('getWinningBoard() should return new board with winning line', (t) => {
   const winningLine = [[0, 0], [1, 1], [2, 2]]
   const winner = 'o'

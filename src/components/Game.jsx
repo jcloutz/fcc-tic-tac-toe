@@ -1,6 +1,7 @@
 import React from 'react'
-import PromptManager from '../components/PromptManager'
-import Board from '../components/Board'
+import PromptManager from './PromptManager'
+import Board from './Board'
+import Footer from './Footer'
 const { element } = React.PropTypes
 
 const Game = ({children}) => (
@@ -12,7 +13,7 @@ const Game = ({children}) => (
       <Board />
     </section>
     <div className='layout__footer'>
-      Footer Content
+      <Footer />
     </div>
   </main>
 )

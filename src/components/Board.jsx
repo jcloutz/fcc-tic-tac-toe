@@ -83,19 +83,17 @@ class Board extends Component {
       <div key='vertical-bars' className='board-grid__bar--vertical'></div>
     ]
     return (
-      <div>
-        <div className='board'>
-          <div className='board-grid'>
-            <ReactCSSTransitionGroup
-              transitionName='board-grid__bar'
-              transitionEnterTimeout={2400}
-              transitionLeaveTimeout={3200}>
-              {visible && gridBars}
-            </ReactCSSTransitionGroup>
-          </div>
-          <div className='board-cell-container'>
-              {cells}
-          </div>
+      <div className='board'>
+        <div className='board-grid'>
+          <ReactCSSTransitionGroup
+            transitionName='board-grid__bar'
+            transitionEnterTimeout={2400}
+            transitionLeaveTimeout={3200}>
+            {visible && gridBars}
+          </ReactCSSTransitionGroup>
+        </div>
+        <div className='board-cell-container'>
+            {cells}
         </div>
       </div>
     )
