@@ -1,8 +1,13 @@
 var getConfig = require('hjs-webpack')
+var autoprefixer = require('autoprefixer')
 
-module.exports = getConfig({
+var config = getConfig({
   in: 'src/app.jsx',
   out: 'dist',
   cleanBeforeBuild: true,
   hostname: 'kragle.local'
 })
+
+config.module.postcss = [autoprefixer({ browsers: ['last 2 versions'] })]
+
+module.exports = config
