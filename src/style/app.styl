@@ -1,0 +1,39 @@
+@import url(https://fonts.googleapis.com/css?family=Jura:300);
+
+$primary-color = #E2F7FF
+$background-color = #202123
+$primary-shadow-color = rgba(226,247, 255, .5)
+$text-shadow = 0 0 7px $primary-shadow-color
+$hidden-shadow = 0 0 7px $background-color
+$primary-font = 'Jura', Helvetica, Arial, sans-serif
+
+html,body
+  min-height: 100%
+  display: flex
+  width: 100%
+  align-items: stretch
+  align-content: stretch
+body
+  background-color: $background-color
+  color $primary-color
+  text-shadow: $text-shadow
+  font-family: $primary-font
+  font-weight: 300
+  text-align: center
+  // display: flex
+  // flex-grow: 100
+  // align-items: center
+
+#root
+  margin: 0 auto;
+  width: 320px;
+  padding: 5px
+
+@import './reset'
+@import './components/layout'
+@import './components/typewriter'
+@import './components/input-container'
+@import './components/board'
+@import './components/board-cell-marker'
+@import './components/board-grid'
+@import './components/footer'

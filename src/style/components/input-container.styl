@@ -1,0 +1,35 @@
+.input-container
+  font-size: 40px
+  transition: opacity .8s ease-in-out
+  &--hide
+    opacity: 0
+  &--show
+    opacity: 1
+  & button
+    color: $primary-color
+    font-size: 18px
+    font-family: $primary-font
+    padding: 8px 0
+    display: inline-block;
+    margin: 0 8px
+    background-color: transparent
+    border: 1px solid transparent;
+    text-transform: uppercase
+    text-shadow: $text-shadow
+    width: 100px
+    transition: all .5s ease-in-out
+    &:hover
+      border-color: $primary-color
+      box-shadow: 0 0 7px rgba(226,247, 255, .5)
+  & input[type*='text']
+    background-color: transparent
+    border: 0
+    color: $primary-color
+    text-shadow: $text-shadow
+    font-size: 20px
+    outline: 0
+    width: 100%
+    margin: 0
+    line-height: 1.5
+    padding: 5px
+    border-bottom: 1px solid $primary-color
