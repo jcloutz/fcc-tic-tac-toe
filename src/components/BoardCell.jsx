@@ -5,10 +5,12 @@ const BoardCell = ({
   marker,
   row,
   cell,
+  active,
+  clickable,
   handleCellClick
 }) => {
   let content
-
+  let placeholderClass = ''
   switch (marker) {
     case 'x':
       content = <div className='board-cell-marker board-cell-marker__x' />
@@ -17,12 +19,13 @@ const BoardCell = ({
       content = <div className='board-cell-marker board-cell-marker__o' />
       break
     default:
+      placeholderClass = clickable ? `board-cell-placeholder__${active}` : ''
       content = null
   }
 
   return (
     <div
-      className={'board-cell'}
+      className={'board-cell ' + placeholderClass}
       onClick={() => {
         if (!marker) handleCellClick(row, cell)
       }}>
@@ -36,12 +39,14 @@ const BoardCell = ({
   )
 }
 
-const { string, number, func } = React.PropTypes
+const { string, number, func, bool } = React.PropTypes
 
 BoardCell.propTypes = {
   marker: string,
   row: number,
   cell: number,
+  active: string,
+  clickable: bool,
   handleCellClick: func
 }
 

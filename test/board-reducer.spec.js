@@ -3,8 +3,10 @@ import {
         initialState,
         getWinner,
         isWinningLine,
+        isGameOver,
         getBestMove,
-        getWinningBoard
+        getWinningBoard,
+        isPossibleLine
       } from '../src/modules/game'
 
 const initialTestState = {
@@ -55,6 +57,23 @@ test('winningColumn() with 0 marks', (t) => {
   const test = getWinner(board, 'x', 'o')
 
   t.deepEqual(test.winningLine, [[0, 1], [1, 1], [2, 1]], 'Should equal [[0,1], [1, 1], [2, 1]]')
+  t.end()
+})
+
+test('isGameOver() with full board', (t) => {
+  const testState = {
+    initialTestState,
+    active: 'x',
+    board: [
+      ['x', 'o', 'x'],
+      ['x', 'o', 'o'],
+      ['o', 'x', 'x']
+    ]
+  }
+
+  const test = isGameOver(testState)
+
+  t.equal(test.gameOver, true, 'Should be true')
   t.end()
 })
 
@@ -161,6 +180,25 @@ test('getBestMove() should complete board', (t) => {
   t.end()
 })
 
+test('getBestMove() on empty board', (t) => {
+  const testState = {
+    ...initialTestState,
+    player1: 'o',
+    player2: 'x',
+    active: 'x',
+    board: [
+      [null, null, null],
+      [null, null, null],
+      [null, null, null]
+    ]
+  }
+
+  const test = getBestMove(testState)
+
+  t.deepEqual(test, [0, 0], 'Should equal [0, 0]')
+  t.end()
+})
+
 test('getWinningBoard() should return new board with winning line', (t) => {
   const winningLine = [[0, 0], [1, 1], [2, 2]]
   const winner = 'o'
@@ -173,5 +211,44 @@ test('getWinningBoard() should return new board with winning line', (t) => {
   const test = getWinningBoard(winningLine, winner)
 
   t.deepEqual(test, winningBoard, 'Should be equal')
+  t.end()
+})
+
+
+test('isPossibleLine() should return 1 line', (t) => {
+  const testState = {
+    ...initialTestState,
+    player1: 'x',
+    player2: 'o',
+    active: 'o',
+    board: [
+      ['x', null, 'x'],
+      [null, null, null],
+      [null, 'o', null]
+    ]
+  }
+
+  const test = isPossibleLine(testState, [0, 1], 'o')
+
+  t.equal(test, true, 'Should equal true')
+  t.end()
+})
+
+test('isPossibleLine() should return false', (t) => {
+  const testState = {
+    ...initialTestState,
+    player1: 'x',
+    player2: 'o',
+    active: 'o',
+    board: [
+      ['x', null, null],
+      [null, null, 'o'],
+      [null, 'x', null]
+    ]
+  }
+
+  const test = isPossibleLine(testState, [0, 1], 'o')
+
+  t.equal(test, false, 'Should equal false')
   t.end()
 })

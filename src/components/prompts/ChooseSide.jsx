@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Prompt from '../Prompt'
-import { setBoardVisibility, setPlayer } from '../../modules/board'
+import { setBoardVisibility, setPlayer } from '../../modules/game'
 import { nextGameState } from '../../modules/gameState'
 
 const ChooseSidePage = ({ setPlayer, nextGameState, setBoardVisibility }) => (
