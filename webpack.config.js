@@ -8,6 +8,6 @@ var config = getConfig({
   hostname: 'kragle.local'
 })
 
-config.module.postcss = [autoprefixer({ browsers: ['last 2 versions'] })]
+config.module.postcss = [autoprefixer({ browsers: ['last 3 versions'] })]
 
 module.exports = config
